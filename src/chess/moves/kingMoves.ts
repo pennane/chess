@@ -1,7 +1,13 @@
 import { indexToSquare, squareToIndex } from '../chess'
-import { KING_MOVES, KNIGHT_MOVES } from '../chess.constants'
+import {
+  CASTLE_KING_SIDE,
+  CASTLE_QUEEN_SIDE,
+  KING_MOVES,
+  WHITE
+} from '../chess.constants'
 import { isOutOfBounds } from '../chess.lib'
 import { SquareIndex, State, Move } from '../chess.models'
+import { isSquareUnderAttack } from './moves'
 
 export function generateKingMoves(from: SquareIndex, state: State): Move[] {
   const moves: Move[] = []
@@ -21,11 +27,54 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
 
     moves.push({
       from: from,
-      to: destinationIndex,
-      note: 'k'
+      to: destinationIndex
     })
 
-    // castling
+    if (isSquareUnderAttack(from, state)) continue
+
+    const canCastleQueenSide = state.castlingAbility[state.sideToMove].queenSide
+    const canCastleKingSide = state.castlingAbility[state.sideToMove].kingSide
+
+    if (!canCastleKingSide && !canCastleQueenSide) continue
+
+    if (canCastleKingSide) {
+      const kingSideSquares = [
+        squareToIndex({ rank, file: file + 1 }),
+        squareToIndex({ rank, file: file + 2 })
+      ]
+      if (
+        kingSideSquares.every((index) => state.board[index] === null) &&
+        kingSideSquares.every((index) => !isSquareUnderAttack(index, state))
+      ) {
+        moves.push({
+          from,
+          to: squareToIndex({ rank, file: file + 2 }),
+          castling: CASTLE_KING_SIDE
+        })
+      }
+    }
+
+    if (canCastleQueenSide) {
+      const queenSideSquares = [
+        squareToIndex({ rank, file: file - 1 }),
+        squareToIndex({ rank, file: file - 2 }),
+        squareToIndex({ rank, file: file - 3 })
+      ]
+      if (
+        queenSideSquares.every(
+          (squareIndex) => state.board[squareIndex] === null
+        ) &&
+        queenSideSquares
+          .slice(0, 2)
+          .every((index) => !isSquareUnderAttack(index, state))
+      ) {
+        moves.push({
+          from,
+          to: squareToIndex({ rank, file: file - 2 }),
+          castling: CASTLE_QUEEN_SIDE
+        })
+      }
+    }
   }
 
   return moves

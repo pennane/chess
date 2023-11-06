@@ -1,5 +1,6 @@
 import { CHESS_BOARD_SIZE, WHITE } from '../chess/chess.constants'
 import { State } from '../chess/chess.models'
+import { stateToFen } from '../fen/fen'
 import { pieceToSymbol } from './draw.lib'
 
 export function drawState(state: State): void {
@@ -23,5 +24,7 @@ export function drawState(state: State): void {
       console.log(rankString)
     }
   }
-  console.log(`===================\n\n`)
+  console.log(`===================`)
+  console.log(stateToFen(state))
+  console.log(`\n\n`)
 }

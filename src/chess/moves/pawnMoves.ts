@@ -29,8 +29,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
   ) {
     moves.push({
       from: from,
-      to: squareToIndex(squareOneForward),
-      note: 'p by one'
+      to: squareToIndex(squareOneForward)
     })
   }
 
@@ -40,8 +39,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
   if (rank === pawnStartingRank && !pieceOneForward && !pieceTwoForward) {
     moves.push({
       from: from,
-      to: squareToIndex(squareTwoForward),
-      note: 'p two'
+      to: squareToIndex(squareTwoForward)
     })
   }
 
@@ -58,8 +56,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
   ) {
     moves.push({
       from: from,
-      to: squareToIndex(squareOneForwardOneLeft),
-      note: 'p capture l'
+      to: squareToIndex(squareOneForwardOneLeft)
     })
   }
 
@@ -76,8 +73,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
   ) {
     moves.push({
       from: from,
-      to: squareToIndex(squareOneForwardOneRight),
-      note: 'p capture r'
+      to: squareToIndex(squareOneForwardOneRight)
     })
   }
 
@@ -87,8 +83,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
     if (enPassantPiece?.color !== state.sideToMove) {
       moves.push({
         from: from,
-        to: state.enPassantTargetSquareIndex,
-        note: 'en passant'
+        to: state.enPassantTargetSquareIndex
       })
     }
   }
@@ -99,8 +94,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
       moves.push({
         from: from,
         to: squareToIndex(squareOneForward),
-        promotion,
-        note: 'promotion'
+        promotion
       })
     }
   }

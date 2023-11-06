@@ -34,19 +34,23 @@ export function chessPieceToFen(chessPiece: ChessPiece): FenPiece {
 
 export function fenToCastlingAbility(fenCastling: string): CastlingAbility {
   return {
-    whiteKingSide: fenCastling.includes(FenPiece.WhiteKing),
-    whiteQueenSide: fenCastling.includes(FenPiece.WhiteQueen),
-    blackKingSide: fenCastling.includes(FenPiece.BlackKing),
-    blackQueenSide: fenCastling.includes(FenPiece.BlackQueen)
+    [WHITE]: {
+      kingSide: fenCastling.includes(FenPiece.WhiteKing),
+      queenSide: fenCastling.includes(FenPiece.WhiteQueen)
+    },
+    [BLACK]: {
+      kingSide: fenCastling.includes(FenPiece.BlackKing),
+      queenSide: fenCastling.includes(FenPiece.BlackQueen)
+    }
   }
 }
 
 export function castlingAbilityToFen(castlingAbility: CastlingAbility): string {
   const fenCastling = []
-  if (castlingAbility.whiteKingSide) fenCastling.push(FenPiece.WhiteKing)
-  if (castlingAbility.whiteQueenSide) fenCastling.push(FenPiece.WhiteQueen)
-  if (castlingAbility.blackKingSide) fenCastling.push(FenPiece.BlackKing)
-  if (castlingAbility.blackQueenSide) fenCastling.push(FenPiece.BlackQueen)
+  if (castlingAbility[WHITE].kingSide) fenCastling.push(FenPiece.WhiteKing)
+  if (castlingAbility[WHITE].queenSide) fenCastling.push(FenPiece.WhiteQueen)
+  if (castlingAbility[BLACK].kingSide) fenCastling.push(FenPiece.BlackKing)
+  if (castlingAbility[BLACK].queenSide) fenCastling.push(FenPiece.BlackQueen)
   return fenCastling.length > 0 ? fenCastling.join('') : '-'
 }
 

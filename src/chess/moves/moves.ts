@@ -1,4 +1,5 @@
 import { assertNever } from '../../utils/assert'
+import { indexToSquare, squareToIndex } from '../chess'
 import {
   WHITE,
   PAWN,
@@ -7,7 +8,12 @@ import {
   ROOK,
   QUEEN,
   KING,
-  BLACK
+  BLACK,
+  FILE_A,
+  FILE_H,
+  CASTLE_KING_SIDE,
+  CASTLE_QUEEN_SIDE,
+  CASTLING_SQUARES
 } from '../chess.constants'
 import { getPiece } from '../chess.lib'
 import {
@@ -32,17 +38,100 @@ function isLegal(state: State, move: Move): boolean {
     color: state.sideToMove
   })
   if (!kingSquare) throw new Error('lol king missing')
-  return !isInCheck(kingSquare, nextState)
+  return !isSquareUnderAttack(kingSquare, nextState)
 }
 
 export function simulateMove(move: Move, state: State): State {
-  const newState = structuredClone(state)
-  newState.board[move.to] = newState.board[move.from]
-  newState.board[move.from] = null
+  const clonedState = structuredClone(state)
 
-  newState.sideToMove = newState.sideToMove === WHITE ? BLACK : WHITE
+  const sideToMove = clonedState.sideToMove
+  const opponentSide = sideToMove === WHITE ? BLACK : WHITE
 
-  return newState
+  const fromSquare = indexToSquare(move.from)
+  const toSquare = indexToSquare(move.to)
+
+  const movedPiece = getPiece(move.from, clonedState)!
+  const targetPiece = getPiece(move.to, clonedState)
+
+  if (movedPiece.type === KING) {
+    clonedState.castlingAbility[sideToMove].kingSide = false
+    clonedState.castlingAbility[sideToMove].queenSide = false
+  }
+
+  if (movedPiece.type === ROOK && fromSquare.file === FILE_A) {
+    clonedState.castlingAbility[sideToMove].queenSide = false
+  }
+
+  if (movedPiece.type === ROOK && fromSquare.file === FILE_H) {
+    clonedState.castlingAbility[sideToMove].kingSide = false
+  }
+
+  const opponentCanCastleKingSide =
+    clonedState.castlingAbility[opponentSide].kingSide
+  const opponentCanCastleQueenSide =
+    clonedState.castlingAbility[opponentSide].queenSide
+
+  if (
+    opponentCanCastleQueenSide &&
+    targetPiece?.type === ROOK &&
+    toSquare.file === FILE_A
+  ) {
+    clonedState.castlingAbility[opponentSide].queenSide = false
+  }
+
+  if (
+    opponentCanCastleKingSide &&
+    targetPiece?.type === ROOK &&
+    toSquare.file === FILE_H
+  ) {
+    clonedState.castlingAbility[opponentSide].kingSide = false
+  }
+
+  clonedState.sideToMove = clonedState.sideToMove === WHITE ? BLACK : WHITE
+  clonedState.fullmoveCounter += 1
+
+  if (move.castling === CASTLE_KING_SIDE) {
+    const temp =
+      clonedState.board[
+        squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[KING])
+      ]
+    clonedState.board[
+      squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[KING])
+    ] =
+      clonedState.board[
+        squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[ROOK])
+      ]
+    clonedState.board[
+      squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[ROOK])
+    ] = temp
+    return clonedState
+  }
+
+  if (move.castling === CASTLE_QUEEN_SIDE) {
+    const temp =
+      clonedState.board[
+        squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[KING])
+      ]
+    clonedState.board[
+      squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[KING])
+    ] =
+      clonedState.board[
+        squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[ROOK])
+      ]
+    clonedState.board[
+      squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[ROOK])
+    ] = temp
+    return clonedState
+  }
+
+  clonedState.board[move.to] = clonedState.board[move.from]
+  clonedState.board[move.from] = null
+
+  if (move.promotion) {
+    clonedState.board[move.to] = { color: sideToMove, type: move.promotion }
+  }
+
+  return clonedState
 }
 
 function findPiecePosition(
@@ -64,7 +153,8 @@ function findPiecePosition(
 
 export function generateMovesForSquareIndex(
   state: State,
-  squareIndex: SquareIndex
+  squareIndex: SquareIndex,
+  ignoreKing: boolean = false
 ): Move[] {
   const piece = getPiece(squareIndex, state)
   if (!piece) return []
@@ -80,7 +170,7 @@ export function generateMovesForSquareIndex(
     case QUEEN:
       return generateQueenMoves(squareIndex, state)
     case KING:
-      return generateKingMoves(squareIndex, state)
+      return ignoreKing ? [] : generateKingMoves(squareIndex, state)
     default:
       assertNever(piece.type)
       return []
@@ -101,13 +191,25 @@ export function generateMoves(state: State): Move[] {
   return legalMoves
 }
 
-export function isInCheck(kingSquare: SquareIndex, state: State): boolean {
+export function isSquareUnderAttack(
+  square: SquareIndex,
+  state: State
+): boolean {
+  const targetPiece = getPiece(square, state)
+  const isKingTargeted = targetPiece?.type === KING
+
   for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
     const piece = getPiece(squareIndex, state)
-    if (!piece || piece.color !== state.sideToMove) continue
-    const moves = generateMovesForSquareIndex(state, squareIndex)
 
-    if (moves.some((move) => move.to === kingSquare)) {
+    if (!piece || piece.color !== state.sideToMove) continue
+
+    const moves = generateMovesForSquareIndex(
+      state,
+      squareIndex,
+      isKingTargeted
+    )
+
+    if (moves.some((move) => move.to === square)) {
       return true
     }
   }

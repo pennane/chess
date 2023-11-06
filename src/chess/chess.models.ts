@@ -1,11 +1,8 @@
-import { COLORS, PIECES, PROMOTABLE_PIECES } from './chess.constants'
+import { CASTLINGS, COLORS, PIECES, PROMOTABLE_PIECES } from './chess.constants'
 
-export type CastlingAbility = {
-  whiteKingSide: boolean
-  whiteQueenSide: boolean
-  blackKingSide: boolean
-  blackQueenSide: boolean
-}
+export type Castling = (typeof CASTLINGS)[number]
+
+export type CastlingAbility = Record<Color, Record<Castling, boolean>>
 
 export type SquareIndex = number
 export type Square = {
@@ -36,5 +33,5 @@ export type Move = {
   from: SquareIndex
   to: SquareIndex
   promotion?: (typeof PROMOTABLE_PIECES)[number]
-  note?: string
+  castling?: Castling
 }

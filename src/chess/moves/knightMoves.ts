@@ -21,8 +21,7 @@ export function generateKnightMoves(from: SquareIndex, state: State): Move[] {
 
     moves.push({
       from: from,
-      to: destinationIndex,
-      note: 'n ' + dr + ' ' + ' ' + df
+      to: destinationIndex
     })
   }
 

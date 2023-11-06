@@ -1,3 +1,5 @@
+import { Castling, Color, Square } from './chess.models'
+
 export const CHESS_BOARD_SIZE = 8
 
 export const DEFAULT_POSITION =
@@ -63,6 +65,36 @@ export const BLACK = 'b'
 export const COLORS = [WHITE, BLACK] as const
 
 export const PROMOTABLE_PIECES = [QUEEN, KNIGHT, BISHOP, ROOK] as const
+
+export const CASTLE_KING_SIDE = 'kingSide'
+export const CASTLE_QUEEN_SIDE = 'queenSide'
+export const CASTLINGS = [CASTLE_KING_SIDE, CASTLE_QUEEN_SIDE] as const
+
+export const CASTLING_SQUARES: Record<
+  Color,
+  Record<Castling, Record<typeof KING | typeof ROOK, Square>>
+> = {
+  [BLACK]: {
+    [CASTLE_KING_SIDE]: {
+      [KING]: { file: FILE_G, rank: RANK_8 },
+      [ROOK]: { file: FILE_F, rank: RANK_8 }
+    },
+    [CASTLE_QUEEN_SIDE]: {
+      [KING]: { file: FILE_C, rank: RANK_8 },
+      [ROOK]: { file: FILE_D, rank: RANK_8 }
+    }
+  },
+  [WHITE]: {
+    [CASTLE_KING_SIDE]: {
+      [KING]: { file: FILE_G, rank: RANK_1 },
+      [ROOK]: { file: FILE_F, rank: RANK_1 }
+    },
+    [CASTLE_QUEEN_SIDE]: {
+      [KING]: { file: FILE_C, rank: RANK_1 },
+      [ROOK]: { file: FILE_D, rank: RANK_1 }
+    }
+  }
+}
 
 export const KNIGHT_MOVES = [
   [2, 1],
