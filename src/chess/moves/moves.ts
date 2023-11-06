@@ -25,22 +25,14 @@ import { generatePawnMoves } from './pawnMoves'
 import { generateQueenMoves } from './queenMoves'
 import { generateRookMoves } from './rookMoves'
 
-function resultsInCheck(
-  kingSquare: SquareIndex,
-  move: Move,
-  state: State
-): boolean {
+function isLegal(state: State, move: Move): boolean {
   const nextState = simulateMove(move, state)
-
-  return isInCheck(kingSquare, nextState)
-}
-
-function filterOutIllegalMoves(
-  kingSquare: SquareIndex,
-  moves: Move[],
-  state: State
-): Move[] {
-  return moves.filter((move) => !resultsInCheck(kingSquare, move, state))
+  const kingSquare = findPiecePosition(nextState.board, {
+    type: KING,
+    color: state.sideToMove
+  })
+  if (!kingSquare) throw new Error('lol king missing')
+  return !isInCheck(kingSquare, nextState)
 }
 
 export function simulateMove(move: Move, state: State): State {
@@ -71,8 +63,8 @@ function findPiecePosition(
 }
 
 export function generateMovesForSquareIndex(
-  squareIndex: SquareIndex,
-  state: State
+  state: State,
+  squareIndex: SquareIndex
 ): Move[] {
   const piece = getPiece(squareIndex, state)
   if (!piece) return []
@@ -101,25 +93,19 @@ export function generateMoves(state: State): Move[] {
   for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
     const piece = state.board[squareIndex]
     if (!piece || piece.color !== state.sideToMove) continue
-    const newMoves = generateMovesForSquareIndex(squareIndex, state)
+    const newMoves = generateMovesForSquareIndex(state, squareIndex)
     moves.push(...newMoves)
   }
 
-  const kingPosition = findPiecePosition(state.board, {
-    type: KING,
-    color: state.sideToMove
-  })
-  if (!kingPosition) throw new Error('Lol king is missing?')
-  // const legalMoves = filterOutIllegalMoves(kingPosition, moves, state)
-
-  return moves
+  const legalMoves = moves.filter((move) => isLegal(state, move))
+  return legalMoves
 }
 
 export function isInCheck(kingSquare: SquareIndex, state: State): boolean {
   for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
     const piece = getPiece(squareIndex, state)
-    if (!piece || piece.color === state.sideToMove) continue
-    const moves = generateMovesForSquareIndex(squareIndex, state)
+    if (!piece || piece.color !== state.sideToMove) continue
+    const moves = generateMovesForSquareIndex(state, squareIndex)
 
     if (moves.some((move) => move.to === kingSquare)) {
       return true
