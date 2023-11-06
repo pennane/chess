@@ -1,11 +1,15 @@
-import { indexToSquare, squareToIndex } from '../chess/chess'
 import {
   BLACK,
   CHESS_BOARD_SIZE,
   COLORS,
   WHITE
 } from '../chess/chess.constants'
-import { parseFile, parseRank } from '../chess/chess.lib'
+import {
+  indexToSquare,
+  parseFile,
+  parseRank,
+  squareToIndex
+} from '../chess/chess.lib'
 import {
   ChessPiece,
   Color,

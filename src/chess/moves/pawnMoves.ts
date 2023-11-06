@@ -1,4 +1,3 @@
-import { indexToSquare, squareToIndex } from '../chess'
 import {
   WHITE,
   RANK_2,
@@ -8,7 +7,12 @@ import {
   RANK_8,
   PROMOTABLE_PIECES
 } from '../chess.constants'
-import { getPiece, isOutOfBounds } from '../chess.lib'
+import {
+  getPiece,
+  indexToSquare,
+  isOutOfBounds,
+  squareToIndex
+} from '../chess.lib'
 import { SquareIndex, State, Move, Square } from '../chess.models'
 
 export function generatePawnMoves(from: SquareIndex, state: State): Move[] {

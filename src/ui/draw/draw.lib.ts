@@ -7,8 +7,8 @@ import {
   QUEEN,
   ROOK,
   WHITE
-} from '../chess/chess.constants'
-import { ChessPiece, Color, Piece } from '../chess/chess.models'
+} from '../../chess/chess.constants'
+import { ChessPiece, Color, Piece } from '../../chess/chess.models'
 
 const PIECE_TO_SYMBOL_MAP: Record<Color, Record<Piece, string>> = {
   [BLACK]: {

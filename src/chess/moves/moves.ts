@@ -1,5 +1,4 @@
 import { assertNever } from '../../utils/assert'
-import { indexToSquare, squareToIndex } from '../chess'
 import {
   WHITE,
   PAWN,
@@ -15,7 +14,7 @@ import {
   CASTLE_QUEEN_SIDE,
   CASTLING_SQUARES
 } from '../chess.constants'
-import { getPiece } from '../chess.lib'
+import { getPiece, indexToSquare, squareToIndex } from '../chess.lib'
 import {
   State,
   Move,

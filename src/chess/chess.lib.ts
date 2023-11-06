@@ -1,5 +1,4 @@
-import { indexToSquare, squareToIndex } from './chess'
-import { CHESS_BOARD_SIZE } from './chess.constants'
+import { CHESS_BOARD_SIZE, PROMOTABLE_PIECES } from './chess.constants'
 import { ChessPiece, Square, SquareIndex, State } from './chess.models'
 
 export function parseFile(file: string): number | null {
@@ -10,8 +9,19 @@ export function parseFile(file: string): number | null {
 
 export function parseRank(rank: string): number | null {
   const parsedRank = parseInt(rank) - 1
+
   if (parsedRank < 0 || parsedRank > 7) return null
   return parsedRank
+}
+
+export function parsePromotionPiece(
+  piece: string
+): (typeof PROMOTABLE_PIECES)[number] | undefined {
+  if (!piece) return undefined
+  if (PROMOTABLE_PIECES.includes(piece.toLowerCase() as any)) {
+    return piece.toLowerCase() as any
+  }
+  return undefined
 }
 
 export function getPiece(
@@ -40,4 +50,14 @@ export function isOutOfBounds(square: Square) {
   if (square.file < 0 || square.file >= CHESS_BOARD_SIZE) return true
   if (square.rank < 0 || square.rank >= CHESS_BOARD_SIZE) return true
   return false
+}
+
+export function indexToSquare(index: number): Square {
+  const rank = Math.floor(index / CHESS_BOARD_SIZE)
+  const file = index % CHESS_BOARD_SIZE
+  return { rank, file }
+}
+
+export function squareToIndex(square: Square): SquareIndex {
+  return square.rank * CHESS_BOARD_SIZE + square.file
 }

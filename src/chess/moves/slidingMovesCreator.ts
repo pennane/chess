@@ -1,6 +1,10 @@
-import { indexToSquare, squareToIndex } from '../chess'
 import { BISHOP_DIRECTIONS } from '../chess.constants'
-import { getPiece, isOutOfBounds } from '../chess.lib'
+import {
+  getPiece,
+  indexToSquare,
+  isOutOfBounds,
+  squareToIndex
+} from '../chess.lib'
 
 import { SquareIndex, State, Move } from '../chess.models'
 

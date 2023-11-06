@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 devDependencies:
+  '@types/node':
+    specifier: ^20.8.10
+    version: 20.8.10
   ts-node:
     specifier: ^10.9.1
     version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)

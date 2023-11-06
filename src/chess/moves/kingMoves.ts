@@ -1,11 +1,10 @@
-import { indexToSquare, squareToIndex } from '../chess'
 import {
   CASTLE_KING_SIDE,
   CASTLE_QUEEN_SIDE,
   KING_MOVES,
   WHITE
 } from '../chess.constants'
-import { isOutOfBounds } from '../chess.lib'
+import { indexToSquare, isOutOfBounds, squareToIndex } from '../chess.lib'
 import { SquareIndex, State, Move } from '../chess.models'
 import { isSquareUnderAttack } from './moves'
 

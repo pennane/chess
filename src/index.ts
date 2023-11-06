@@ -1,25 +1,15 @@
 import { DEFAULT_POSITION } from './chess/chess.constants'
-import { State } from './chess/chess.models'
-import { generateMoves, simulateMove } from './chess/moves/moves'
-import { drawState } from './draw/draw'
 
 import { fenToState } from './fen/fen'
-import { sample } from './utils/array'
+import { playTurnInPrompt, promptForColor } from './ui/prompt/prompt'
+import { wait } from './utils/promise'
 
-const state = fenToState(DEFAULT_POSITION)
-
-const wait = async (ms: number) =>
-  new Promise((resolve) => setTimeout(() => resolve(true), ms))
-
-const dumbGeneration = async (currentState: State) => {
-  const moves = generateMoves(currentState)
-  drawState(currentState)
-  if (moves.length === 0) return console.log('no legal moves')
+async function start() {
   await wait(500)
-  const move = sample(moves)
-  const newState = simulateMove(move, currentState)
-
-  await dumbGeneration(newState)
+  console.log('CHESS - da bomb')
+  await wait(500)
+  const color = await promptForColor()
+  const state = fenToState(DEFAULT_POSITION)
+  playTurnInPrompt(state, color)
 }
-
-dumbGeneration(state)
+start()
