@@ -1,27 +1,34 @@
-import { CHESS_BOARD_SIZE } from '../chess/chess.constants'
+import { indexToSquare, squareToIndex } from '../chess/chess'
+import {
+  BLACK,
+  CHESS_BOARD_SIZE,
+  COLORS,
+  WHITE
+} from '../chess/chess.constants'
+import { parseFile, parseRank } from '../chess/chess.lib'
 import {
   ChessPiece,
   Color,
   Piece,
   CastlingAbility,
-  Square,
-  File,
+  SquareIndex,
   Board
 } from '../chess/chess.models'
-import { splitIntoChunks } from '../lib/array'
+import { splitIntoChunks } from '../utils/array'
+import { isNil } from '../utils/fp'
 import { FenPiece } from './fen.models'
 
 export function fenToChessPiece(fenPiece: FenPiece): ChessPiece {
   return {
-    color: fenPiece === fenPiece.toLowerCase() ? Color.Black : Color.White,
-    piece: fenPiece.toLowerCase() as Piece
+    color: fenPiece === fenPiece.toLowerCase() ? BLACK : WHITE,
+    type: fenPiece.toLowerCase() as Piece
   }
 }
 
 export function chessPieceToFen(chessPiece: ChessPiece): FenPiece {
-  const fenChar = chessPiece.piece
+  const fenChar = chessPiece.type
   return (
-    chessPiece.color === Color.White ? fenChar.toUpperCase() : fenChar
+    chessPiece.color === WHITE ? fenChar.toUpperCase() : fenChar
   ) as FenPiece
 }
 
@@ -43,20 +50,27 @@ export function castlingAbilityToFen(castlingAbility: CastlingAbility): string {
   return fenCastling.length > 0 ? fenCastling.join('') : '-'
 }
 
-export function fenToEnPassantTargetSquare(fen: string): Square | null {
+export function fenToEnPassantTargetSquareIndex(
+  fen: string
+): SquareIndex | null {
   if (fen === '-') return null
   const [file, rank, ...rest] = fen.split('')
-  if (rest.length > 1 || !file || !rank) return null
-  return { file: file as File, rank: parseInt(rank) }
+  const parsedFile = parseFile(file)
+  const parsedRank = parseRank(rank)
+  if (rest.length > 1 || !parsedFile || !parsedRank) return null
+  return squareToIndex({ file: parsedFile, rank: parsedRank })
 }
 
-export function enPassantTargetSquareToFen(square: Square | null): string {
-  if (!square) return '-'
+export function enPassantTargetSquareIndexToFen(
+  squareIndex: SquareIndex | null
+): string {
+  if (isNil(squareIndex)) return '-'
+  const square = indexToSquare(squareIndex)
   return `${square.file}${square.rank}`
 }
 
 export function fenToSideToMove(fen: string): Color {
-  if (Object.values(Color).includes(fen as Color)) {
+  if (COLORS.includes(fen as Color)) {
     return fen as Color
   }
   throw new Error('Invalid color in fenToSideToMove')
@@ -71,7 +85,8 @@ export function fenToBoard(fen: string): Board {
 
   let board: Array<ChessPiece | null> = []
 
-  for (const rank of ranks) {
+  for (let rankIndex = CHESS_BOARD_SIZE - 1; rankIndex >= 0; rankIndex--) {
+    const rank = ranks[rankIndex]
     for (const symbol of rank.split('')) {
       if (!isNaN(parseInt(symbol))) {
         board = board.concat(
@@ -108,7 +123,7 @@ export function boardToFen(board: Board): string {
     if (encounteredEmpties > 0) {
       fenRank += String(encounteredEmpties)
     }
-    fenRanks.push(fenRank)
+    fenRanks = [fenRank].concat(fenRanks)
   }
   return fenRanks.join('/')
 }

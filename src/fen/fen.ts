@@ -2,10 +2,10 @@ import { State } from '../chess/chess.models'
 import {
   boardToFen,
   castlingAbilityToFen,
-  enPassantTargetSquareToFen,
+  enPassantTargetSquareIndexToFen,
   fenToBoard,
   fenToCastlingAbility,
-  fenToEnPassantTargetSquare,
+  fenToEnPassantTargetSquareIndex,
   fenToSideToMove,
   fenToFullmoveCounter,
   sideToMoveToFen,
@@ -19,7 +19,7 @@ export function fenToState(fen: string): State {
     board,
     sideToMove,
     castlingAbility,
-    enPassantTargetSquare,
+    enPassantTargetSquareIndex,
     halfmoveClock,
     fullmoveCounter
   ] = fen.split(' ')
@@ -28,7 +28,9 @@ export function fenToState(fen: string): State {
     board: fenToBoard(board),
     sideToMove: fenToSideToMove(sideToMove),
     castlingAbility: fenToCastlingAbility(castlingAbility),
-    enPassantTargetSquare: fenToEnPassantTargetSquare(enPassantTargetSquare),
+    enPassantTargetSquareIndex: fenToEnPassantTargetSquareIndex(
+      enPassantTargetSquareIndex
+    ),
     halfmoveClock: fenToHalfmoveClock(halfmoveClock),
     fullmoveCounter: fenToFullmoveCounter(fullmoveCounter)
   }
@@ -39,7 +41,7 @@ export function stateToFen(state: State): string {
     boardToFen(state.board),
     sideToMoveToFen(state.sideToMove),
     castlingAbilityToFen(state.castlingAbility),
-    enPassantTargetSquareToFen(state.enPassantTargetSquare),
+    enPassantTargetSquareIndexToFen(state.enPassantTargetSquareIndex),
     halfmoveClockToFen(state.halfmoveClock),
     fullmoveCounterToFen(state.fullmoveCounter)
   ]
