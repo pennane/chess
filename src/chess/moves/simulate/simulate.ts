@@ -6,11 +6,13 @@ import {
   handleCastling,
   handleMove,
   handlePromotion,
-  invertStateSideToMove
+  invertStateSideToMove,
+  clone
 } from './simutate.lib'
 
 export const simulateMove = (state: State, move: Move) =>
   pipe(
+    clone<State>,
     updateCastlingAbility(move),
     incrementFullMoveCounter,
     handleCastling(move),
