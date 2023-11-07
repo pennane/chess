@@ -12,6 +12,7 @@ async function start() {
   playTurnInPrompt(state, color)
 }
 start()
+
 // startComputerOnlyGame(
 //   fenToState(
 //     DEFAULT_POSITION

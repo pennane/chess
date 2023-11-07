@@ -26,7 +26,17 @@ export async function getInput(prompt: string): Promise<string> {
 export async function playTurnInPrompt(state: State, userSide: Color) {
   drawState(state, userSide)
   const possibleMoves = generateMoves(state)
-  DEBUG && console.log(possibleMoves.map((move) => moveToReadable(state, move)))
+  if (DEBUG) {
+    console.log(
+      'turn',
+      state.sideToMove === WHITE ? 'White' : 'Black',
+      'legal moves',
+      possibleMoves.map((move) => moveToReadable(state, move)),
+      'in check',
+      isInCheck(state)
+    )
+  }
+
   if (isEmpty(possibleMoves)) {
     const inCheck = isInCheck(state)
     if (inCheck) {
