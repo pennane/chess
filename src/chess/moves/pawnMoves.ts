@@ -2,7 +2,6 @@ import {
   WHITE,
   RANK_2,
   RANK_7,
-  CHESS_BOARD_SIZE,
   RANK_1,
   RANK_8,
   PROMOTABLE_PIECES

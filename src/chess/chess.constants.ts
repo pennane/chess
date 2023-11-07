@@ -72,26 +72,40 @@ export const CASTLINGS = [CASTLE_KING_SIDE, CASTLE_QUEEN_SIDE] as const
 
 export const CASTLING_SQUARES: Record<
   Color,
-  Record<Castling, Record<typeof KING | typeof ROOK, Square>>
+  Record<
+    Castling,
+    Record<
+      'newRookSquare' | 'newKingSquare' | 'oldRookSquare' | 'oldKingSquare',
+      Square
+    >
+  >
 > = {
   [BLACK]: {
     [CASTLE_KING_SIDE]: {
-      [KING]: { file: FILE_G, rank: RANK_8 },
-      [ROOK]: { file: FILE_F, rank: RANK_8 }
+      oldKingSquare: { file: FILE_E, rank: RANK_8 },
+      newKingSquare: { file: FILE_G, rank: RANK_8 },
+      oldRookSquare: { file: FILE_H, rank: RANK_8 },
+      newRookSquare: { file: FILE_F, rank: RANK_8 }
     },
     [CASTLE_QUEEN_SIDE]: {
-      [KING]: { file: FILE_C, rank: RANK_8 },
-      [ROOK]: { file: FILE_D, rank: RANK_8 }
+      oldKingSquare: { file: FILE_E, rank: RANK_8 },
+      newKingSquare: { file: FILE_C, rank: RANK_8 },
+      oldRookSquare: { file: FILE_A, rank: RANK_8 },
+      newRookSquare: { file: FILE_D, rank: RANK_8 }
     }
   },
   [WHITE]: {
     [CASTLE_KING_SIDE]: {
-      [KING]: { file: FILE_G, rank: RANK_1 },
-      [ROOK]: { file: FILE_F, rank: RANK_1 }
+      oldKingSquare: { file: FILE_E, rank: RANK_1 },
+      newKingSquare: { file: FILE_G, rank: RANK_1 },
+      oldRookSquare: { file: FILE_H, rank: RANK_1 },
+      newRookSquare: { file: FILE_F, rank: RANK_1 }
     },
     [CASTLE_QUEEN_SIDE]: {
-      [KING]: { file: FILE_C, rank: RANK_1 },
-      [ROOK]: { file: FILE_D, rank: RANK_1 }
+      oldKingSquare: { file: FILE_E, rank: RANK_1 },
+      newKingSquare: { file: FILE_C, rank: RANK_1 },
+      oldRookSquare: { file: FILE_A, rank: RANK_1 },
+      newRookSquare: { file: FILE_D, rank: RANK_1 }
     }
   }
 }

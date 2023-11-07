@@ -1,4 +1,3 @@
-import { BISHOP_DIRECTIONS } from '../chess.constants'
 import {
   getPiece,
   indexToSquare,
@@ -21,7 +20,9 @@ export const slidingMovesCreator =
         currentRank += dr
         currentFile += df
 
-        if (isOutOfBounds({ file: currentFile, rank: currentRank })) break
+        if (isOutOfBounds({ file: currentFile, rank: currentRank })) {
+          break
+        }
 
         const destination = squareToIndex({
           rank: currentRank,

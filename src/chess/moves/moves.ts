@@ -36,8 +36,8 @@ function isLegal(state: State, move: Move): boolean {
     type: KING,
     color: state.sideToMove
   })
-  if (!kingSquare) throw new Error('lol king missing')
-  return !isSquareUnderAttack(kingSquare, nextState)
+  if (!kingSquare) return false
+  return !isSquareUnderAttack(kingSquare, nextState, state.sideToMove)
 }
 
 export function simulateMove(move: Move, state: State): State {
@@ -90,36 +90,47 @@ export function simulateMove(move: Move, state: State): State {
   clonedState.fullmoveCounter += 1
 
   if (move.castling === CASTLE_KING_SIDE) {
-    const temp =
-      clonedState.board[
-        squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[KING])
-      ]
-    clonedState.board[
-      squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[KING])
-    ] =
-      clonedState.board[
-        squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[ROOK])
-      ]
-    clonedState.board[
-      squareToIndex(CASTLING_SQUARES[sideToMove].kingSide[ROOK])
-    ] = temp
+    const oldKingSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].kingSide.oldKingSquare
+    )
+    const newKingSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].kingSide.newKingSquare
+    )
+    const oldRookSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].kingSide.oldRookSquare
+    )
+    const newRookSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].kingSide.newRookSquare
+    )
+    const king = clonedState.board[oldKingSquare]
+    const rook = clonedState.board[oldKingSquare]
+    clonedState.board[oldKingSquare] = null
+    clonedState.board[oldRookSquare] = null
+    clonedState.board[newKingSquare] = king
+    clonedState.board[newRookSquare] = rook
     return clonedState
   }
 
   if (move.castling === CASTLE_QUEEN_SIDE) {
-    const temp =
-      clonedState.board[
-        squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[KING])
-      ]
-    clonedState.board[
-      squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[KING])
-    ] =
-      clonedState.board[
-        squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[ROOK])
-      ]
-    clonedState.board[
-      squareToIndex(CASTLING_SQUARES[sideToMove].queenSide[ROOK])
-    ] = temp
+    const oldKingSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].queenSide.oldKingSquare
+    )
+    const newKingSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].queenSide.newKingSquare
+    )
+    const oldRookSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].queenSide.oldRookSquare
+    )
+    const newRookSquare = squareToIndex(
+      CASTLING_SQUARES[sideToMove].queenSide.newRookSquare
+    )
+    const king = clonedState.board[oldKingSquare]
+    const rook = clonedState.board[oldKingSquare]
+    clonedState.board[oldKingSquare] = null
+    clonedState.board[oldRookSquare] = null
+    clonedState.board[newKingSquare] = king
+    clonedState.board[newRookSquare] = rook
+
     return clonedState
   }
 
@@ -192,21 +203,16 @@ export function generateMoves(state: State): Move[] {
 
 export function isSquareUnderAttack(
   square: SquareIndex,
-  state: State
+  state: State,
+  attackedColor: Color,
+  ignoreKing: boolean = false
 ): boolean {
-  const targetPiece = getPiece(square, state)
-  const isKingTargeted = targetPiece?.type === KING
-
   for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
     const piece = getPiece(squareIndex, state)
 
-    if (!piece || piece.color !== state.sideToMove) continue
+    if (!piece || piece.color === attackedColor) continue
 
-    const moves = generateMovesForSquareIndex(
-      state,
-      squareIndex,
-      isKingTargeted
-    )
+    const moves = generateMovesForSquareIndex(state, squareIndex, ignoreKing)
 
     if (moves.some((move) => move.to === square)) {
       return true

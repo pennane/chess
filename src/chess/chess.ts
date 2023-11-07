@@ -1,11 +1,12 @@
+import { moveToReadable } from '../ui/draw/draw.lib'
+import { isNil } from '../utils/fp'
 import {
-  getPiece,
   parseFile,
   parsePromotionPiece,
   parseRank,
   squareToIndex
 } from './chess.lib'
-import { Move, Square, SquareIndex, State } from './chess.models'
+import { Move, State } from './chess.models'
 import { generateMoves, simulateMove } from './moves/moves'
 
 function parseMove(move: string): Move | null {
@@ -17,7 +18,9 @@ function parseMove(move: string): Move | null {
   const toRank = parseRank(fields[3])
   const promotion = parsePromotionPiece(fields[4])
 
-  if (!fromFile || !fromRank || !toFile || !toRank) return null
+  if (isNil(fromFile) || isNil(fromRank) || isNil(toFile) || isNil(toRank)) {
+    return null
+  }
 
   return {
     from: squareToIndex({ file: fromFile, rank: fromRank }),
@@ -39,6 +42,7 @@ export function playMove(playedMove: string | Move, state: State): State {
     typeof playedMove === 'string' ? parseMove(playedMove) : playedMove
   if (!parsedMove) return state
   const generatedMoves = generateMoves(state)
+  console.log(moveToReadable(state, parsedMove))
   const matchedMove = generatedMoves.find(
     (move) =>
       move.from === parsedMove.from &&

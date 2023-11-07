@@ -24,16 +24,16 @@ export async function getInput(prompt: string): Promise<string> {
 export async function playTurnInPrompt(state: State, userSide: Color) {
   drawState(state, userSide)
   if (state.sideToMove === userSide) {
-    console.log('Your turn.')
+    console.info('Your turn.')
     const playedMove = await getInput('Enter move: (e.g. a3a5)')
     const newState = playMove(playedMove, state)
     await wait(300)
     return playTurnInPrompt(newState, userSide)
   }
 
-  console.log("Computer's turn.")
+  console.info("Computer's turn.")
   await wait(300)
-  console.log('Thinking...')
+  console.info('Thinking...')
   await wait(600)
   const moves = generateMoves(state)
   const playedMove = sample(moves)
@@ -45,9 +45,9 @@ export async function promptForColor(): Promise<Color> {
   const selectedColor = await getInput(
     'Choose what you want to play as: (w/b) '
   )
-  if (COLORS.includes(selectedColor.toLowerCase() as Color)) {
+  if (selectedColor && COLORS.includes(selectedColor.toLowerCase() as Color)) {
     return selectedColor.toLowerCase() as Color
   }
-  console.log('Invalid color.')
+  console.info('Invalid color.')
   return promptForColor()
 }

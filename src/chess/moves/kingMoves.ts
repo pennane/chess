@@ -29,22 +29,28 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
       to: destinationIndex
     })
 
-    if (isSquareUnderAttack(from, state)) continue
+    if (isSquareUnderAttack(from, state, state.sideToMove, true)) continue
 
     const canCastleQueenSide = state.castlingAbility[state.sideToMove].queenSide
     const canCastleKingSide = state.castlingAbility[state.sideToMove].kingSide
 
-    if (!canCastleKingSide && !canCastleQueenSide) continue
+    if (!canCastleKingSide && !canCastleQueenSide) {
+      continue
+    }
 
     if (canCastleKingSide) {
       const kingSideSquares = [
         squareToIndex({ rank, file: file + 1 }),
         squareToIndex({ rank, file: file + 2 })
       ]
-      if (
-        kingSideSquares.every((index) => state.board[index] === null) &&
-        kingSideSquares.every((index) => !isSquareUnderAttack(index, state))
-      ) {
+      const everyIsClear = kingSideSquares.every(
+        (index) => state.board[index] === null
+      )
+      const everyIsUnContested = kingSideSquares.every(
+        (index) => !isSquareUnderAttack(index, state, state.sideToMove, true)
+      )
+
+      if (everyIsClear && everyIsUnContested) {
         moves.push({
           from,
           to: squareToIndex({ rank, file: file + 2 }),
@@ -59,14 +65,16 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
         squareToIndex({ rank, file: file - 2 }),
         squareToIndex({ rank, file: file - 3 })
       ]
-      if (
-        queenSideSquares.every(
-          (squareIndex) => state.board[squareIndex] === null
-        ) &&
-        queenSideSquares
-          .slice(0, 2)
-          .every((index) => !isSquareUnderAttack(index, state))
-      ) {
+      const everyIsClear = queenSideSquares.every(
+        (squareIndex) => state.board[squareIndex] === null
+      )
+      const everyIsUnContested = queenSideSquares
+        .slice(0, 2)
+        .every(
+          (index) => !isSquareUnderAttack(index, state, state.sideToMove, true)
+        )
+
+      if (everyIsClear && everyIsUnContested) {
         moves.push({
           from,
           to: squareToIndex({ rank, file: file - 2 }),
