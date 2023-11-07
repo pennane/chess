@@ -31,9 +31,6 @@ export async function playTurnInPrompt(state: State, userSide: Color) {
     return playTurnInPrompt(newState, userSide)
   }
 
-  console.info("Computer's turn.")
-  await wait(300)
-  console.info('Thinking...')
   await wait(600)
   const moves = generateMoves(state)
   const playedMove = sample(moves)

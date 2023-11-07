@@ -42,7 +42,6 @@ export function playMove(playedMove: string | Move, state: State): State {
     typeof playedMove === 'string' ? parseMove(playedMove) : playedMove
   if (!parsedMove) return state
   const generatedMoves = generateMoves(state)
-  console.log(moveToReadable(state, parsedMove))
   const matchedMove = generatedMoves.find(
     (move) =>
       move.from === parsedMove.from &&
