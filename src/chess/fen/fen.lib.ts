@@ -1,15 +1,10 @@
-import {
-  BLACK,
-  CHESS_BOARD_SIZE,
-  COLORS,
-  WHITE
-} from '../chess/chess.constants'
+import { BLACK, CHESS_BOARD_SIZE, COLORS, WHITE } from '../chess.constants'
 import {
   indexToSquare,
   parseFile,
   parseRank,
   squareToIndex
-} from '../chess/chess.lib'
+} from '../chess.lib'
 import {
   ChessPiece,
   Color,
@@ -17,9 +12,9 @@ import {
   CastlingAbility,
   SquareIndex,
   Board
-} from '../chess/chess.models'
-import { splitIntoChunks } from '../utils/array'
-import { isNil } from '../utils/fp'
+} from '../chess.models'
+import { splitIntoChunks } from '../../utils/array'
+import { isNil } from '../../utils/fp'
 import { FenPiece } from './fen.models'
 
 export function fenToChessPiece(fenPiece: FenPiece): ChessPiece {

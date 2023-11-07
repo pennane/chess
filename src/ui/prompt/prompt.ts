@@ -1,11 +1,13 @@
 import * as readline from 'readline'
-import { playMove } from '../../chess/chess'
 import { State, Color } from '../../chess/chess.models'
-import { generateMoves, isInCheck } from '../../chess/moves/moves'
 import { sample } from '../../utils/array'
 import { drawState } from '../draw/draw'
 import { COLORS, WHITE } from '../../chess/chess.constants'
 import { isEmpty } from '../../utils/fp'
+import { generateMoves, playMove } from '../../chess/moves/moves'
+import { isInCheck } from '../../chess/moves/moves.lib'
+import { moveToReadable } from '../draw/draw.lib'
+import { DEBUG } from '../..'
 
 export async function getInput(prompt: string): Promise<string> {
   const rl = readline.createInterface({
@@ -24,6 +26,7 @@ export async function getInput(prompt: string): Promise<string> {
 export async function playTurnInPrompt(state: State, userSide: Color) {
   drawState(state, userSide)
   const possibleMoves = generateMoves(state)
+  DEBUG && console.log(possibleMoves.map((move) => moveToReadable(state, move)))
   if (isEmpty(possibleMoves)) {
     const inCheck = isInCheck(state)
     if (inCheck) {
@@ -60,4 +63,12 @@ export async function promptForColor(): Promise<Color> {
   }
   console.info('Invalid color.')
   return promptForColor()
+}
+
+export async function startComputerOnlyGame(state: State) {
+  drawState(state, WHITE)
+  const possibleMoves = generateMoves(state)
+  const move = sample(possibleMoves)
+  const newState = playMove(move, state)
+  setTimeout(() => startComputerOnlyGame(newState), 250)
 }

@@ -5,14 +5,14 @@ import {
   RANK_1,
   RANK_8,
   PROMOTABLE_PIECES
-} from '../chess.constants'
+} from '../../chess.constants'
 import {
   getPiece,
   indexToSquare,
   isOutOfBounds,
   squareToIndex
-} from '../chess.lib'
-import { SquareIndex, State, Move, Square } from '../chess.models'
+} from '../../chess.lib'
+import { SquareIndex, State, Move, Square } from '../../chess.models'
 
 export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
   const moves: Move[] = []

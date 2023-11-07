@@ -1,173 +1,28 @@
 import { assertNever } from '../../utils/assert'
-import {
-  WHITE,
-  PAWN,
-  KNIGHT,
-  BISHOP,
-  ROOK,
-  QUEEN,
-  KING,
-  BLACK,
-  FILE_A,
-  FILE_H,
-  CASTLE_KING_SIDE,
-  CASTLE_QUEEN_SIDE,
-  CASTLING_SQUARES
-} from '../chess.constants'
-import { getPiece, indexToSquare, squareToIndex } from '../chess.lib'
-import {
-  State,
-  Move,
-  SquareIndex,
-  ChessPiece,
-  Board,
-  Color
-} from '../chess.models'
-import { generateBishopMoves } from './bishopMoves'
-import { generateKingMoves } from './kingMoves'
-import { generateKnightMoves } from './knightMoves'
-import { generatePawnMoves } from './pawnMoves'
-import { generateQueenMoves } from './queenMoves'
-import { generateRookMoves } from './rookMoves'
+import { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } from '../chess.constants'
+import { getPiece, squareToIndex } from '../chess.lib'
+import { State, Move, SquareIndex, Square } from '../chess.models'
+import { generateBishopMoves } from './pieces/bishopMoves'
+import { generateKingMoves } from './pieces/kingMoves'
+import { generateKnightMoves } from './pieces/knightMoves'
+import { isLegalMove, parseMove, validateMove } from './moves.lib'
+import { generatePawnMoves } from './pieces/pawnMoves'
+import { generateQueenMoves } from './pieces/queenMoves'
+import { generateRookMoves } from './pieces/rookMoves'
+import { simulateMove } from './simulate/simulate'
 
-function isLegal(state: State, move: Move): boolean {
-  const nextState = simulateMove(move, state)
-  const kingSquare = findPiecePosition(nextState.board, {
-    type: KING,
-    color: state.sideToMove
-  })
-  if (!kingSquare) return false
-  return !isSquareUnderAttack(kingSquare, nextState, state.sideToMove)
-}
-
-export function simulateMove(move: Move, state: State): State {
-  const clonedState = structuredClone(state)
-
-  const sideToMove = clonedState.sideToMove
-  const opponentSide = sideToMove === WHITE ? BLACK : WHITE
-
-  const fromSquare = indexToSquare(move.from)
-  const toSquare = indexToSquare(move.to)
-
-  const movedPiece = getPiece(move.from, clonedState)!
-  const targetPiece = getPiece(move.to, clonedState)
-
-  if (movedPiece.type === KING) {
-    clonedState.castlingAbility[sideToMove].kingSide = false
-    clonedState.castlingAbility[sideToMove].queenSide = false
-  }
-
-  if (movedPiece.type === ROOK && fromSquare.file === FILE_A) {
-    clonedState.castlingAbility[sideToMove].queenSide = false
-  }
-
-  if (movedPiece.type === ROOK && fromSquare.file === FILE_H) {
-    clonedState.castlingAbility[sideToMove].kingSide = false
-  }
-
-  const opponentCanCastleKingSide =
-    clonedState.castlingAbility[opponentSide].kingSide
-  const opponentCanCastleQueenSide =
-    clonedState.castlingAbility[opponentSide].queenSide
-
-  if (
-    opponentCanCastleQueenSide &&
-    targetPiece?.type === ROOK &&
-    toSquare.file === FILE_A
-  ) {
-    clonedState.castlingAbility[opponentSide].queenSide = false
-  }
-
-  if (
-    opponentCanCastleKingSide &&
-    targetPiece?.type === ROOK &&
-    toSquare.file === FILE_H
-  ) {
-    clonedState.castlingAbility[opponentSide].kingSide = false
-  }
-
-  clonedState.sideToMove = clonedState.sideToMove === WHITE ? BLACK : WHITE
-  clonedState.fullmoveCounter += 1
-
-  if (move.castling === CASTLE_KING_SIDE) {
-    const oldKingSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].kingSide.oldKingSquare
-    )
-    const newKingSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].kingSide.newKingSquare
-    )
-    const oldRookSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].kingSide.oldRookSquare
-    )
-    const newRookSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].kingSide.newRookSquare
-    )
-    const king = clonedState.board[oldKingSquare]
-    const rook = clonedState.board[oldRookSquare]
-    clonedState.board[oldKingSquare] = null
-    clonedState.board[oldRookSquare] = null
-    clonedState.board[newKingSquare] = king
-    clonedState.board[newRookSquare] = rook
-    return clonedState
-  }
-
-  if (move.castling === CASTLE_QUEEN_SIDE) {
-    const oldKingSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].queenSide.oldKingSquare
-    )
-    const newKingSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].queenSide.newKingSquare
-    )
-    const oldRookSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].queenSide.oldRookSquare
-    )
-    const newRookSquare = squareToIndex(
-      CASTLING_SQUARES[sideToMove].queenSide.newRookSquare
-    )
-    const king = clonedState.board[oldKingSquare]
-    const rook = clonedState.board[oldRookSquare]
-    clonedState.board[oldKingSquare] = null
-    clonedState.board[oldRookSquare] = null
-    clonedState.board[newKingSquare] = king
-    clonedState.board[newRookSquare] = rook
-
-    return clonedState
-  }
-
-  clonedState.board[move.to] = clonedState.board[move.from]
-  clonedState.board[move.from] = null
-
-  if (move.promotion) {
-    clonedState.board[move.to] = { color: sideToMove, type: move.promotion }
-  }
-
-  return clonedState
-}
-
-function findPiecePosition(
-  board: Board,
-  targetPiece: ChessPiece
-): SquareIndex | null {
-  for (let i = 0; i < board.length; i++) {
-    const piece = board[i]
-    if (
-      piece &&
-      piece.type === targetPiece.type &&
-      piece.color === targetPiece.color
-    ) {
-      return i
-    }
-  }
-  return null
-}
-
-export function generateMovesForSquareIndex(
+export function generateMovesForSquare(
   state: State,
-  squareIndex: SquareIndex,
+  square: SquareIndex | Square,
   ignoreKing: boolean = false
 ): Move[] {
+  const squareIndex =
+    typeof square === 'number' ? square : squareToIndex(square)
+
   const piece = getPiece(squareIndex, state)
+
   if (!piece) return []
+
   switch (piece.type) {
     case PAWN:
       return generatePawnMoves(squareIndex, state)
@@ -193,53 +48,28 @@ export function generateMoves(state: State): Move[] {
   for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
     const piece = state.board[squareIndex]
     if (!piece || piece.color !== state.sideToMove) continue
-    const newMoves = generateMovesForSquareIndex(state, squareIndex)
+    const newMoves = generateMovesForSquare(state, squareIndex)
     moves.push(...newMoves)
   }
 
-  const legalMoves = moves.filter((move) => isLegal(state, move))
+  const legalMoves = moves.filter((move) => isLegalMove(state, move))
   return legalMoves
 }
 
-export function isSquareUnderAttack(
-  square: SquareIndex,
-  state: State,
-  attackedColor: Color,
-  ignoreKing: boolean = false
-): boolean {
-  for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
-    const piece = getPiece(squareIndex, state)
-
-    if (!piece || piece.color === attackedColor) continue
-
-    const moves = generateMovesForSquareIndex(
-      { ...state, sideToMove: attackedColor === WHITE ? BLACK : WHITE },
-      squareIndex,
-      ignoreKing
-    )
-
-    if (moves.some((move) => move.to === square)) {
-      return true
-    }
-  }
-
-  return false
-}
-export function isInCheck(state: State) {
-  const kingSquare = findPiecePosition(state.board, {
-    type: KING,
-    color: state.sideToMove
-  })
-  if (!kingSquare) return true
-  const inCheck = isSquareUnderAttack(kingSquare, state, state.sideToMove)
-  return inCheck
-}
-
-export function validateMove(state: State, move: Move) {
-  const generatedMoves = generateMovesForSquareIndex(state, move.from)
-  const validatedMove = generatedMoves.find(
-    (m) =>
-      move.from === m.from && move.to === m.to && move.promotion === m.promotion
-  )
-  return validatedMove
+/**
+ * Uses Pure coordinate notation
+ * <from square><to square>[<promoted to>]
+ * e.g. b2b4
+ *
+ * and when promoting
+ * b7b8q
+ */
+export function playMove(playedMove: string | Move, state: State): State {
+  const parsedMove =
+    typeof playedMove === 'string' ? parseMove(playedMove) : playedMove
+  if (!parsedMove) return state
+  const validatedMove = validateMove(state, parsedMove)
+  if (!validatedMove) return state
+  const nextState = simulateMove(state, validatedMove)
+  return nextState
 }

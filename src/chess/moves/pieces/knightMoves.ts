@@ -1,6 +1,6 @@
-import { KNIGHT_MOVES } from '../chess.constants'
-import { indexToSquare, isOutOfBounds, squareToIndex } from '../chess.lib'
-import { SquareIndex, State, Move } from '../chess.models'
+import { KNIGHT_MOVES } from '../../chess.constants'
+import { indexToSquare, isOutOfBounds, squareToIndex } from '../../chess.lib'
+import { SquareIndex, State, Move } from '../../chess.models'
 
 export function generateKnightMoves(from: SquareIndex, state: State): Move[] {
   const moves: Move[] = []

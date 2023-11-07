@@ -1,4 +1,4 @@
-import { State } from '../chess/chess.models'
+import { State } from '../chess.models'
 import {
   boardToFen,
   castlingAbilityToFen,

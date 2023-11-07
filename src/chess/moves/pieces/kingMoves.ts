@@ -3,10 +3,10 @@ import {
   CASTLE_QUEEN_SIDE,
   KING_MOVES,
   WHITE
-} from '../chess.constants'
-import { indexToSquare, isOutOfBounds, squareToIndex } from '../chess.lib'
-import { SquareIndex, State, Move } from '../chess.models'
-import { isSquareUnderAttack } from './moves'
+} from '../../chess.constants'
+import { indexToSquare, isOutOfBounds, squareToIndex } from '../../chess.lib'
+import { SquareIndex, State, Move } from '../../chess.models'
+import { isUnderAttack } from '../moves.lib'
 
 export function generateKingMoves(from: SquareIndex, state: State): Move[] {
   const moves: Move[] = []
@@ -29,7 +29,7 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
       to: destinationIndex
     })
 
-    if (isSquareUnderAttack(from, state, state.sideToMove, true)) continue
+    if (isUnderAttack(from, state, state.sideToMove, true)) continue
 
     const canCastleQueenSide = state.castlingAbility[state.sideToMove].queenSide
     const canCastleKingSide = state.castlingAbility[state.sideToMove].kingSide
@@ -47,7 +47,7 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
         (index) => state.board[index] === null
       )
       const everyIsUnContested = kingSideSquares.every(
-        (index) => !isSquareUnderAttack(index, state, state.sideToMove, true)
+        (index) => !isUnderAttack(index, state, state.sideToMove, true)
       )
 
       if (everyIsClear && everyIsUnContested) {
@@ -70,9 +70,7 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
       )
       const everyIsUnContested = queenSideSquares
         .slice(0, 2)
-        .every(
-          (index) => !isSquareUnderAttack(index, state, state.sideToMove, true)
-        )
+        .every((index) => !isUnderAttack(index, state, state.sideToMove, true))
 
       if (everyIsClear && everyIsUnContested) {
         moves.push({
