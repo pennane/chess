@@ -5,7 +5,12 @@ import { State, Move, SquareIndex, Square } from '../chess.models'
 import { generateBishopMoves } from './pieces/bishopMoves'
 import { generateKingMoves } from './pieces/kingMoves'
 import { generateKnightMoves } from './pieces/knightMoves'
-import { isLegalMove, parseMove, validateMove } from './moves.lib'
+import {
+  findPiecePosition,
+  isLegalMove,
+  parseMove,
+  validateMove
+} from './moves.lib'
 import { generatePawnMoves } from './pieces/pawnMoves'
 import { generateQueenMoves } from './pieces/queenMoves'
 import { generateRookMoves } from './pieces/rookMoves'
@@ -52,7 +57,14 @@ export function generateMoves(state: State): Move[] {
     moves.push(...newMoves)
   }
 
-  const legalMoves = moves.filter((move) => isLegalMove(state, move))
+  const kingPosition = findPiecePosition(state.board, {
+    color: state.sideToMove,
+    type: KING
+  })!
+
+  const legalMoves = moves.filter((move) =>
+    isLegalMove(state, move, kingPosition)
+  )
   return legalMoves
 }
 

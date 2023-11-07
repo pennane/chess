@@ -12,6 +12,7 @@ import {
   ChessPiece,
   Color,
   Move,
+  Square,
   SquareIndex,
   State
 } from '../chess.models'
@@ -38,12 +39,14 @@ export function parseMove(move: string): Move | null {
   }
 }
 
-export function isLegalMove(state: State, move: Move): boolean {
+export function isLegalMove(
+  state: State,
+  move: Move,
+  originalKingSquare: SquareIndex
+): boolean {
   const nextState = simulateMove(state, move)
-  const kingSquare = findPiecePosition(nextState.board, {
-    type: KING,
-    color: state.sideToMove
-  })
+  const movedPiece = getPiece(move.from, state)
+  const kingSquare = movedPiece?.type === 'k' ? move.to : originalKingSquare
   if (!kingSquare) return false
   return !isUnderAttack(kingSquare, nextState, state.sideToMove)
 }
