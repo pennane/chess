@@ -58,7 +58,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
     !isOutOfBounds(squareOneForward)
   ) {
     // Can also promote
-    if ((squareOneForwardOneLeft.rank = pawnEndingRank)) {
+    if (squareOneForwardOneLeft.rank === pawnEndingRank) {
       for (const promotion of PROMOTABLE_PIECES) {
         moves.push({
           from: from,
