@@ -103,7 +103,7 @@ export function simulateMove(move: Move, state: State): State {
       CASTLING_SQUARES[sideToMove].kingSide.newRookSquare
     )
     const king = clonedState.board[oldKingSquare]
-    const rook = clonedState.board[oldKingSquare]
+    const rook = clonedState.board[oldRookSquare]
     clonedState.board[oldKingSquare] = null
     clonedState.board[oldRookSquare] = null
     clonedState.board[newKingSquare] = king
@@ -125,7 +125,7 @@ export function simulateMove(move: Move, state: State): State {
       CASTLING_SQUARES[sideToMove].queenSide.newRookSquare
     )
     const king = clonedState.board[oldKingSquare]
-    const rook = clonedState.board[oldKingSquare]
+    const rook = clonedState.board[oldRookSquare]
     clonedState.board[oldKingSquare] = null
     clonedState.board[oldRookSquare] = null
     clonedState.board[newKingSquare] = king
@@ -212,7 +212,11 @@ export function isSquareUnderAttack(
 
     if (!piece || piece.color === attackedColor) continue
 
-    const moves = generateMovesForSquareIndex(state, squareIndex, ignoreKing)
+    const moves = generateMovesForSquareIndex(
+      { ...state, sideToMove: attackedColor === WHITE ? BLACK : WHITE },
+      squareIndex,
+      ignoreKing
+    )
 
     if (moves.some((move) => move.to === square)) {
       return true
@@ -220,4 +224,22 @@ export function isSquareUnderAttack(
   }
 
   return false
+}
+export function isInCheck(state: State) {
+  const kingSquare = findPiecePosition(state.board, {
+    type: KING,
+    color: state.sideToMove
+  })
+  if (!kingSquare) return true
+  const inCheck = isSquareUnderAttack(kingSquare, state, state.sideToMove)
+  return inCheck
+}
+
+export function validateMove(state: State, move: Move) {
+  const generatedMoves = generateMovesForSquareIndex(state, move.from)
+  const validatedMove = generatedMoves.find(
+    (m) =>
+      move.from === m.from && move.to === m.to && move.promotion === m.promotion
+  )
+  return validatedMove
 }

@@ -57,10 +57,21 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
     pieceOneForwardOneLeft.color !== state.sideToMove &&
     !isOutOfBounds(squareOneForward)
   ) {
-    moves.push({
-      from: from,
-      to: squareToIndex(squareOneForwardOneLeft)
-    })
+    // Can also promote
+    if ((squareOneForwardOneLeft.rank = pawnEndingRank)) {
+      for (const promotion of PROMOTABLE_PIECES) {
+        moves.push({
+          from: from,
+          to: squareToIndex(squareOneForwardOneLeft),
+          promotion
+        })
+      }
+    } else {
+      moves.push({
+        from: from,
+        to: squareToIndex(squareOneForwardOneLeft)
+      })
+    }
   }
 
   // Capture right
@@ -74,10 +85,21 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
     pieceOneForwardOneRight.color !== state.sideToMove &&
     !isOutOfBounds(squareOneForwardOneRight)
   ) {
-    moves.push({
-      from: from,
-      to: squareToIndex(squareOneForwardOneRight)
-    })
+    // Can also promote
+    if (squareOneForwardOneRight.rank === pawnEndingRank) {
+      for (const promotion of PROMOTABLE_PIECES) {
+        moves.push({
+          from: from,
+          to: squareToIndex(squareOneForwardOneRight),
+          promotion
+        })
+      }
+    } else {
+      moves.push({
+        from: from,
+        to: squareToIndex(squareOneForwardOneRight)
+      })
+    }
   }
 
   // En Passant

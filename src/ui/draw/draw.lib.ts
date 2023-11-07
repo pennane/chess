@@ -47,5 +47,7 @@ export function moveToReadable(state: State, move: Move) {
   const to = indexToSquare(move.to)
   return `${piece?.type}:${mapNumberToLetter(from.file)}${
     from.rank + 1
-  }->${mapNumberToLetter(to.file)}${to.rank + 1}`
+  }->${mapNumberToLetter(to.file)}${to.rank + 1}${
+    move.promotion ? ' (' + move.promotion + ')' : ''
+  }`
 }

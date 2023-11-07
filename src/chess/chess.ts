@@ -7,7 +7,7 @@ import {
   squareToIndex
 } from './chess.lib'
 import { Move, State } from './chess.models'
-import { generateMoves, simulateMove } from './moves/moves'
+import { simulateMove, validateMove } from './moves/moves'
 
 function parseMove(move: string): Move | null {
   const fields = move.split('')
@@ -41,15 +41,8 @@ export function playMove(playedMove: string | Move, state: State): State {
   const parsedMove =
     typeof playedMove === 'string' ? parseMove(playedMove) : playedMove
   if (!parsedMove) return state
-  const generatedMoves = generateMoves(state)
-  const matchedMove = generatedMoves.find(
-    (move) =>
-      move.from === parsedMove.from &&
-      move.to === parsedMove.to &&
-      move.promotion === parsedMove.promotion
-  )
-
-  if (!matchedMove) return state
-  const nextState = simulateMove(matchedMove, state)
+  const validatedMove = validateMove(state, parsedMove)
+  if (!validatedMove) return state
+  const nextState = simulateMove(validatedMove, state)
   return nextState
 }

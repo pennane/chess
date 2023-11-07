@@ -4,7 +4,7 @@ import { stateToFen } from '../../fen/fen'
 import { pieceToSymbol } from './draw.lib'
 
 export function drawState(state: State, userSide: Color): void {
-  console.info(`\n\n======================================`)
+  console.info(`\n\n\n\n======================================`)
   if (userSide === WHITE) {
     for (let rank = CHESS_BOARD_SIZE - 1; rank >= 0; rank--) {
       console.info('   +---+---+---+---+---+---+---+---+')
