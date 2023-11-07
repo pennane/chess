@@ -13,3 +13,9 @@ pnpm start
 ```
 
 ![Alt text](docs/screenshot.png)
+
+### Build distributablle
+
+```sh
+pnpm build
+```
