@@ -64,20 +64,53 @@ export async function playTurnInPrompt(state: State, userSide: Color) {
   return playTurnInPrompt(newState, userSide)
 }
 
-export async function promptForColor(): Promise<Color> {
+export async function promptForColor(): Promise<'w' | 'b' | 'c'> {
   const selectedColor = await getInput(
-    'Choose what you want to play as: (w/b) '
+    'Choose side: (w / b / c) (c for computer vs computer) '
   )
-  if (selectedColor && COLORS.includes(selectedColor.toLowerCase() as Color)) {
-    return selectedColor.toLowerCase() as Color
+
+  if (!selectedColor) return promptForColor()
+
+  const color = selectedColor.toLowerCase()
+
+  if (color === 'w' || color === 'b' || color === 'c') {
+    return color
   }
+
   console.info('Invalid color.')
   return promptForColor()
 }
 
 export async function startComputerOnlyGame(state: State) {
   drawState(state, WHITE)
+
   const possibleMoves = generateMoves(state)
+
+  if (DEBUG) {
+    console.log(
+      'turn',
+      state.sideToMove === WHITE ? 'White' : 'Black',
+      'legal moves',
+      possibleMoves.map((move) => moveToReadable(state, move)),
+      'in check',
+      isInCheck(state)
+    )
+  }
+
+  if (isEmpty(possibleMoves)) {
+    const inCheck = isInCheck(state)
+    if (inCheck) {
+      console.info(
+        state.sideToMove === WHITE
+          ? 'Black won with checkmate'
+          : 'White won with checkmate'
+      )
+      return
+    }
+    console.info('Stalemate.')
+    return
+  }
+
   const move = sample(possibleMoves)
   const newState = playMove(move, state)
   setTimeout(() => startComputerOnlyGame(newState), 250)
