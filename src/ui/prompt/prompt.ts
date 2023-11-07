@@ -2,7 +2,7 @@ import * as readline from 'readline'
 import { State, Color } from '../../chess/chess.models'
 import { sample } from '../../utils/array'
 import { drawState } from '../draw/draw'
-import { COLORS, WHITE } from '../../chess/chess.constants'
+import { WHITE } from '../../chess/chess.constants'
 import { isEmpty } from '../../utils/fp'
 import { generateMoves, playMove } from '../../chess/moves/moves'
 import { isInCheck } from '../../chess/moves/moves.lib'
@@ -60,7 +60,7 @@ export async function playTurnInPrompt(state: State, userSide: Color) {
 
   const moves = generateMoves(state)
   const playedMove = sample(moves)
-  const newState = playMove(playedMove, state)
+  const newState = playMove(playedMove, state, true)
   return playTurnInPrompt(newState, userSide)
 }
 
@@ -112,6 +112,6 @@ export async function startComputerOnlyGame(state: State) {
   }
 
   const move = sample(possibleMoves)
-  const newState = playMove(move, state)
+  const newState = playMove(move, state, true)
   setTimeout(() => startComputerOnlyGame(newState), 250)
 }

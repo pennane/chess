@@ -64,7 +64,20 @@ export function generateMoves(state: State): Move[] {
  * and when promoting
  * b7b8q
  */
-export function playMove(playedMove: string | Move, state: State): State {
+export function playMove(
+  playedMove: Move,
+  state: State,
+  noValidation: boolean
+): State
+export function playMove(playedMove: Move | string, state: State): State
+export function playMove(
+  playedMove: string | Move,
+  state: State,
+  noValidation: boolean = false
+): State {
+  if (noValidation) {
+    return simulateMove(state, playedMove as Move)
+  }
   const parsedMove =
     typeof playedMove === 'string' ? parseMove(playedMove) : playedMove
   if (!parsedMove) return state
