@@ -15,8 +15,7 @@ export function generateKnightMoves(from: SquareIndex, state: State): Move[] {
     const destinationIndex = squareToIndex({ rank: newRank, file: newFile })
 
     const destinationPiece = state.board[destinationIndex]
-    if (destinationPiece && destinationPiece.color === state.sideToMove)
-      continue
+    if (destinationPiece?.color === state.sideToMove) continue
 
     moves.push({
       from: from,

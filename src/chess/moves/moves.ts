@@ -16,14 +16,11 @@ import { generateQueenMoves } from './pieces/queenMoves'
 import { generateRookMoves } from './pieces/rookMoves'
 import { simulateMove } from './simulate/simulate'
 
-export function generateMovesForSquare(
+export function generateMovesForSquareIndex(
   state: State,
-  square: SquareIndex | Square,
+  squareIndex: SquareIndex,
   ignoreKing: boolean = false
 ): Move[] {
-  const squareIndex =
-    typeof square === 'number' ? square : squareToIndex(square)
-
   const piece = getPiece(squareIndex, state)
 
   if (!piece) return []
@@ -53,7 +50,7 @@ export function generateMoves(state: State): Move[] {
   for (let squareIndex = 0; squareIndex < state.board.length; squareIndex++) {
     const piece = state.board[squareIndex]
     if (!piece || piece.color !== state.sideToMove) continue
-    const newMoves = generateMovesForSquare(state, squareIndex)
+    const newMoves = generateMovesForSquareIndex(state, squareIndex)
     moves.push(...newMoves)
   }
 

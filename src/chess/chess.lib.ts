@@ -28,22 +28,13 @@ export function getPiece(
   square: Square | SquareIndex,
   state: State
 ): ChessPiece | null {
-  if (
-    isOutOfBounds(typeof square === 'number' ? indexToSquare(square) : square)
-  ) {
+  if (typeof square !== 'number' && isOutOfBounds(square)) {
     return null
   }
 
   return state.board[
     typeof square === 'number' ? square : squareToIndex(square)
   ]
-}
-
-export function getPieceFromSquare(
-  square: Square,
-  state: State
-): ChessPiece | null {
-  return getPiece(squareToIndex(square), state)
 }
 
 export function isOutOfBounds(square: Square) {

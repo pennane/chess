@@ -16,7 +16,7 @@ import {
   SquareIndex,
   State
 } from '../chess.models'
-import { generateMovesForSquare } from './moves'
+import { generateMovesForSquareIndex } from './moves'
 import { simulateMove } from './simulate/simulate'
 
 export function parseMove(move: string): Move | null {
@@ -79,7 +79,7 @@ export function isInCheck(state: State) {
 }
 
 export function validateMove(state: State, move: Move) {
-  const generatedMoves = generateMovesForSquare(state, move.from)
+  const generatedMoves = generateMovesForSquareIndex(state, move.from)
   const validatedMove = generatedMoves.find(
     (m) =>
       move.from === m.from && move.to === m.to && move.promotion === m.promotion
@@ -98,7 +98,7 @@ export function isUnderAttack(
 
     if (!piece || piece.color === attackedColor) continue
 
-    const moves = generateMovesForSquare(
+    const moves = generateMovesForSquareIndex(
       { ...state, sideToMove: invertColor(attackedColor) },
       squareIndex,
       ignoreKing
