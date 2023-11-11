@@ -14,6 +14,10 @@ import {
   fullmoveCounterToFen
 } from './fen.lib'
 
+/**
+ * Takes in a standard FEN string and converts it into a custom State object
+ * https://www.chessprogramming.org/Forsyth-Edwards_Notation
+ */
 export function fenToState(fen: string): State {
   const [
     board,
@@ -36,6 +40,10 @@ export function fenToState(fen: string): State {
   }
 }
 
+/**
+ * Converts a custom State object into a standard FEN string
+ * https://www.chessprogramming.org/Forsyth-Edwards_Notation
+ */
 export function stateToFen(state: State): string {
   const fields = [
     boardToFen(state.board),
