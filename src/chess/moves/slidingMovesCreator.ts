@@ -13,12 +13,12 @@ export const slidingMovesCreator =
     const moves: Move[] = []
     const { rank, file } = indexToSquare(from)
 
-    for (const [dr, df] of directions) {
+    for (const [deltaRank, deltaFile] of directions) {
       let currentRank = rank
       let currentFile = file
       while (true) {
-        currentRank += dr
-        currentFile += df
+        currentRank += deltaRank
+        currentFile += deltaFile
 
         if (isOutOfBounds({ file: currentFile, rank: currentRank })) {
           break

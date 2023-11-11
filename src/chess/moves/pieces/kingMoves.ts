@@ -12,9 +12,9 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
   const moves: Move[] = []
   const { rank, file } = indexToSquare(from)
 
-  for (const [dr, df] of KING_MOVES) {
-    const newRank = rank + dr
-    const newFile = file + df
+  for (const [deltaRank, deltaFile] of KING_MOVES) {
+    const newRank = rank + deltaRank
+    const newFile = file + deltaFile
 
     if (isOutOfBounds({ file: newFile, rank: newRank })) continue
 
