@@ -1,7 +1,10 @@
 # Chess
 
-This project is part of the "
-DX and Clean Code: Enhancing Developer Experience through Quality Code TX00FK85-3001" course. It's a simple multiplayer chess game that currently works in the Command Line Interface (CLI). The computer opponent picks a random legal move on its turn. In the future it will be online multiplayer through simple web GUI
+This project is for the "DX and Clean Code: Enhancing Developer Experience through Quality Code TX00FK85-3001" course. 
+
+It's a simple chess game that currently works in the Command Line Interface (CLI). The computer opponent picks a random legal move on its turn. The idea is to make the game online and add a simple web based GUI.
+
+
 ![Alt text](docs/screenshot.png)
 
 ## Getting Started
@@ -10,8 +13,11 @@ These instructions will help you get a copy of the project up and running on you
 
 ### Prerequisites
 
-Node.js (v18+): [Download here](https://nodejs.org/en).
-Package Manager: [pnpm](https://pnpm.io/) (Recommended). Install via npm install -g pnpm. npm also works fine.
+Node.js (v18+): 
+[Download here](https://nodejs.org/en).
+
+Package Manager: 
+[pnpm](https://pnpm.io/) (Recommended). Install via npm install -g pnpm. npm also works fine.
 
 ## Installation
 
@@ -26,8 +32,11 @@ In the project directory, run: `pnpm start` or `npm start`
 ## Roadmap
 
 - [x] chess
-- [] websocket server for online multiplayer
-- [] web GUI
+- [ ] websocket server for online multiplayer
+- [ ] web GUI
+
+
+
 
 ## Terminology
 
