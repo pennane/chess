@@ -1,22 +1,24 @@
 import { fenToState } from './chess/fen/fen'
-import { DEFAULT_POSITION } from './chess/fen/fen.constants'
+import { INITIAL_CHESS_BOARD_FEN_STRING } from './chess/fen/fen.constants'
 import {
-  playTurnInPrompt,
-  promptForColor,
+  playTurnInConsole,
+  promptForGameType,
   startComputerOnlyGame
 } from './ui/prompt/prompt'
-
-export const DEBUG = false
-export const FEN_STRING = DEFAULT_POSITION
+import logger from './utils/logger'
 
 async function start() {
-  const state = fenToState(FEN_STRING)
-  console.info('CHESS - da bomb')
-  const color = await promptForColor()
-  if (color === 'c') {
+  const state = fenToState(INITIAL_CHESS_BOARD_FEN_STRING)
+
+  logger.info('CHESS - da bomb')
+
+  const gameType = await promptForGameType()
+
+  if (gameType === 'c') {
     return startComputerOnlyGame(state)
   }
 
-  playTurnInPrompt(state, color)
+  playTurnInConsole(state, gameType)
 }
+
 start()

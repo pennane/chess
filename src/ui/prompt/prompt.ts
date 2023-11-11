@@ -7,7 +7,7 @@ import { isEmpty } from '../../utils/fp'
 import { generateMoves, playMove } from '../../chess/moves/moves'
 import { isInCheck } from '../../chess/moves/moves.lib'
 import { moveToReadable } from '../draw/draw.lib'
-import { DEBUG } from '../..'
+import logger from '../../utils/logger'
 
 export async function getInput(prompt: string): Promise<string> {
   const rl = readline.createInterface({
@@ -23,53 +23,52 @@ export async function getInput(prompt: string): Promise<string> {
   })
 }
 
-export async function playTurnInPrompt(state: State, userSide: Color) {
+export async function playTurnInConsole(state: State, userSide: Color) {
   drawState(state, userSide)
   const possibleMoves = generateMoves(state)
-  if (DEBUG) {
-    console.log(
-      'turn',
-      state.sideToMove === WHITE ? 'White' : 'Black',
-      'legal moves',
-      possibleMoves.map((move) => moveToReadable(state, move)),
-      'in check',
-      isInCheck(state)
-    )
-  }
+
+  logger.debug(
+    'turn',
+    state.sideToMove === WHITE ? 'White' : 'Black',
+    'legal moves',
+    possibleMoves.map((move) => moveToReadable(state, move)),
+    'in check',
+    isInCheck(state)
+  )
 
   if (isEmpty(possibleMoves)) {
     const inCheck = isInCheck(state)
     if (inCheck) {
-      console.info(
+      logger.info(
         state.sideToMove === WHITE
           ? 'Black won with checkmate'
           : 'White won with checkmate'
       )
       return
     }
-    console.info('Stalemate.')
+    logger.info('Stalemate.')
     return
   }
 
   if (state.sideToMove === userSide) {
-    console.info('Your turn.')
+    logger.info('Your turn.')
     const playedMove = await getInput('Enter move: (e.g. a3a5)')
     const newState = playMove(playedMove, state)
-    return playTurnInPrompt(newState, userSide)
+    return playTurnInConsole(newState, userSide)
   }
 
   const moves = generateMoves(state)
   const playedMove = sample(moves)
   const newState = playMove(playedMove, state, true)
-  return playTurnInPrompt(newState, userSide)
+  return playTurnInConsole(newState, userSide)
 }
 
-export async function promptForColor(): Promise<'w' | 'b' | 'c'> {
+export async function promptForGameType(): Promise<'w' | 'b' | 'c'> {
   const selectedColor = await getInput(
     'Choose side: (w / b / c) (c for computer vs computer) '
   )
 
-  if (!selectedColor) return promptForColor()
+  if (!selectedColor) return promptForGameType()
 
   const color = selectedColor.toLowerCase()
 
@@ -78,7 +77,7 @@ export async function promptForColor(): Promise<'w' | 'b' | 'c'> {
   }
 
   console.info('Invalid color.')
-  return promptForColor()
+  return promptForGameType()
 }
 
 export async function startComputerOnlyGame(state: State) {
@@ -86,16 +85,14 @@ export async function startComputerOnlyGame(state: State) {
 
   const possibleMoves = generateMoves(state)
 
-  if (DEBUG) {
-    console.log(
-      'turn',
-      state.sideToMove === WHITE ? 'White' : 'Black',
-      'legal moves',
-      possibleMoves.map((move) => moveToReadable(state, move)),
-      'in check',
-      isInCheck(state)
-    )
-  }
+  logger.debug(
+    'turn',
+    state.sideToMove === WHITE ? 'White' : 'Black',
+    'legal moves',
+    possibleMoves.map((move) => moveToReadable(state, move)),
+    'in check',
+    isInCheck(state)
+  )
 
   if (isEmpty(possibleMoves)) {
     const inCheck = isInCheck(state)
