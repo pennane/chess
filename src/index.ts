@@ -1,5 +1,5 @@
-import { fenToState } from './chess/fen/fen'
-import { INITIAL_CHESS_BOARD_FEN_STRING } from './chess/fen/fen.constants'
+import { fenToState } from './chess/serialization/fen/fen'
+import { INITIAL_CHESS_BOARD_FEN_STRING } from './chess/serialization/fen/fen.constants'
 import {
 	playTurnInConsole,
 	promptForGameType,

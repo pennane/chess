@@ -5,16 +5,12 @@ import { State, Move, SquareIndex } from '../chess.models'
 import { generateBishopMoves } from './pieces/bishopMoves'
 import { generateKingMoves } from './pieces/kingMoves'
 import { generateKnightMoves } from './pieces/knightMoves'
-import {
-	findPiecePosition,
-	isLegalMove,
-	parseMove,
-	validateMove,
-} from './moves.lib'
+import { findPiecePosition, isLegalMove, validateMove } from './moves.lib'
 import { generatePawnMoves } from './pieces/pawnMoves'
 import { generateQueenMoves } from './pieces/queenMoves'
 import { generateRookMoves } from './pieces/rookMoves'
 import { simulateMove } from './simulate/simulate'
+import { parseMove } from '../serialization/pureCoordinateNotation/pureCoordinateNotation'
 
 export function generateMovesForSquareIndex(
 	state: State,
@@ -65,14 +61,6 @@ export function generateMoves(state: State): Move[] {
 	return legalMoves
 }
 
-/**
- * Uses Pure coordinate notation
- * <from square><to square>[<promoted to>]
- * e.g. b2b4
- *
- * and when promoting
- * b7b8q
- */
 export function playMove(
 	playedMove: Move,
 	state: State,
@@ -87,8 +75,10 @@ export function playMove(
 	if (noValidation) {
 		return simulateMove(state, playedMove as Move)
 	}
+
 	const parsedMove =
 		typeof playedMove === 'string' ? parseMove(playedMove) : playedMove
+
 	if (!parsedMove) return state
 	const validatedMove = validateMove(state, parsedMove)
 	if (!validatedMove) return state

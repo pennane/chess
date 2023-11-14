@@ -1,12 +1,5 @@
-import { isNil } from '../../utils/fp'
 import { BLACK, KING, WHITE } from '../chess.constants'
-import {
-	parseFile,
-	parseRank,
-	parsePromotionPiece,
-	squareToIndex,
-	getPiece,
-} from '../chess.lib'
+import { getPiece } from '../chess.lib'
 import {
 	Board,
 	ChessPiece,
@@ -17,26 +10,6 @@ import {
 } from '../chess.models'
 import { generateMovesForSquareIndex } from './moves'
 import { simulateMove } from './simulate/simulate'
-
-export function parseMove(move: string): Move | null {
-	const fields = move.split('')
-
-	const fromFile = parseFile(fields[0])
-	const fromRank = parseRank(fields[1])
-	const toFile = parseFile(fields[2])
-	const toRank = parseRank(fields[3])
-	const promotion = parsePromotionPiece(fields[4])
-
-	if (isNil(fromFile) || isNil(fromRank) || isNil(toFile) || isNil(toRank)) {
-		return null
-	}
-
-	return {
-		from: squareToIndex({ file: fromFile, rank: fromRank }),
-		to: squareToIndex({ file: toFile, rank: toRank }),
-		promotion,
-	}
-}
 
 export function isLegalMove(
 	state: State,
