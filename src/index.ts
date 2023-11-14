@@ -1,10 +1,7 @@
+import { computerVsComputerGameLoop, gameLoop } from './chess/gameLoop/gameLoop'
 import { fenToState } from './chess/serialization/fen/fen'
 import { INITIAL_CHESS_BOARD_FEN_STRING } from './chess/serialization/fen/fen.constants'
-import {
-	playTurnInConsole,
-	promptForGameType,
-	startComputerOnlyGame,
-} from './ui/prompt/prompt'
+import { promptForGameType } from './ui/prompt/prompt'
 import logger from './utils/logger'
 
 async function start() {
@@ -15,10 +12,10 @@ async function start() {
 	const gameType = await promptForGameType()
 
 	if (gameType === 'c') {
-		return startComputerOnlyGame(state)
+		return computerVsComputerGameLoop(state)
 	}
 
-	playTurnInConsole(state, gameType)
+	gameLoop(state, gameType)
 }
 
 start()
