@@ -1,4 +1,4 @@
 const config = {
-  DEBUG: false
+	DEBUG: false,
 }
 export default config
