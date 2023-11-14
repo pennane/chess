@@ -12,14 +12,14 @@ export const RANK_7 = 6
 export const RANK_8 = 7
 
 export const RANKS = [
-  RANK_1,
-  RANK_2,
-  RANK_3,
-  RANK_4,
-  RANK_5,
-  RANK_6,
-  RANK_7,
-  RANK_8
+	RANK_1,
+	RANK_2,
+	RANK_3,
+	RANK_4,
+	RANK_5,
+	RANK_6,
+	RANK_7,
+	RANK_8,
 ] as const
 
 export const FILE_A = 0
@@ -32,14 +32,14 @@ export const FILE_G = 6
 export const FILE_H = 7
 
 export const FILES = [
-  FILE_A,
-  FILE_B,
-  FILE_C,
-  FILE_D,
-  FILE_E,
-  FILE_F,
-  FILE_G,
-  FILE_H
+	FILE_A,
+	FILE_B,
+	FILE_C,
+	FILE_D,
+	FILE_E,
+	FILE_F,
+	FILE_G,
+	FILE_H,
 ] as const
 
 export const QUEEN = 'q'
@@ -63,79 +63,82 @@ export const CASTLE_QUEEN_SIDE = 'queenSide'
 export const CASTLINGS = [CASTLE_KING_SIDE, CASTLE_QUEEN_SIDE] as const
 
 export const CASTLING_SQUARES: Record<
-  Color,
-  Record<
-    Castling,
-    Record<
-      'newRookSquare' | 'newKingSquare' | 'oldRookSquare' | 'oldKingSquare',
-      Square
-    >
-  >
+	Color,
+	Record<
+		Castling,
+		Record<
+			| 'newRookSquare'
+			| 'newKingSquare'
+			| 'oldRookSquare'
+			| 'oldKingSquare',
+			Square
+		>
+	>
 > = {
-  [BLACK]: {
-    [CASTLE_KING_SIDE]: {
-      oldKingSquare: { file: FILE_E, rank: RANK_8 },
-      newKingSquare: { file: FILE_G, rank: RANK_8 },
-      oldRookSquare: { file: FILE_H, rank: RANK_8 },
-      newRookSquare: { file: FILE_F, rank: RANK_8 }
-    },
-    [CASTLE_QUEEN_SIDE]: {
-      oldKingSquare: { file: FILE_E, rank: RANK_8 },
-      newKingSquare: { file: FILE_C, rank: RANK_8 },
-      oldRookSquare: { file: FILE_A, rank: RANK_8 },
-      newRookSquare: { file: FILE_D, rank: RANK_8 }
-    }
-  },
-  [WHITE]: {
-    [CASTLE_KING_SIDE]: {
-      oldKingSquare: { file: FILE_E, rank: RANK_1 },
-      newKingSquare: { file: FILE_G, rank: RANK_1 },
-      oldRookSquare: { file: FILE_H, rank: RANK_1 },
-      newRookSquare: { file: FILE_F, rank: RANK_1 }
-    },
-    [CASTLE_QUEEN_SIDE]: {
-      oldKingSquare: { file: FILE_E, rank: RANK_1 },
-      newKingSquare: { file: FILE_C, rank: RANK_1 },
-      oldRookSquare: { file: FILE_A, rank: RANK_1 },
-      newRookSquare: { file: FILE_D, rank: RANK_1 }
-    }
-  }
+	[BLACK]: {
+		[CASTLE_KING_SIDE]: {
+			oldKingSquare: { file: FILE_E, rank: RANK_8 },
+			newKingSquare: { file: FILE_G, rank: RANK_8 },
+			oldRookSquare: { file: FILE_H, rank: RANK_8 },
+			newRookSquare: { file: FILE_F, rank: RANK_8 },
+		},
+		[CASTLE_QUEEN_SIDE]: {
+			oldKingSquare: { file: FILE_E, rank: RANK_8 },
+			newKingSquare: { file: FILE_C, rank: RANK_8 },
+			oldRookSquare: { file: FILE_A, rank: RANK_8 },
+			newRookSquare: { file: FILE_D, rank: RANK_8 },
+		},
+	},
+	[WHITE]: {
+		[CASTLE_KING_SIDE]: {
+			oldKingSquare: { file: FILE_E, rank: RANK_1 },
+			newKingSquare: { file: FILE_G, rank: RANK_1 },
+			oldRookSquare: { file: FILE_H, rank: RANK_1 },
+			newRookSquare: { file: FILE_F, rank: RANK_1 },
+		},
+		[CASTLE_QUEEN_SIDE]: {
+			oldKingSquare: { file: FILE_E, rank: RANK_1 },
+			newKingSquare: { file: FILE_C, rank: RANK_1 },
+			oldRookSquare: { file: FILE_A, rank: RANK_1 },
+			newRookSquare: { file: FILE_D, rank: RANK_1 },
+		},
+	},
 }
 
 export const KNIGHT_MOVES = [
-  [2, 1],
-  [1, 2],
-  [-1, 2],
-  [-2, 1],
-  [-2, -1],
-  [-1, -2],
-  [1, -2],
-  [2, -1]
+	[2, 1],
+	[1, 2],
+	[-1, 2],
+	[-2, 1],
+	[-2, -1],
+	[-1, -2],
+	[1, -2],
+	[2, -1],
 ]
 
 export const KING_MOVES = [
-  [1, 0],
-  [1, 1],
-  [0, 1],
-  [-1, 1],
-  [-1, 0],
-  [-1, -1],
-  [0, -1],
-  [1, -1]
+	[1, 0],
+	[1, 1],
+	[0, 1],
+	[-1, 1],
+	[-1, 0],
+	[-1, -1],
+	[0, -1],
+	[1, -1],
 ]
 
 export const ROOK_DIRECTIONS = [
-  [1, 0],
-  [0, 1],
-  [-1, 0],
-  [0, -1]
+	[1, 0],
+	[0, 1],
+	[-1, 0],
+	[0, -1],
 ]
 
 export const BISHOP_DIRECTIONS = [
-  [1, 1],
-  [-1, 1],
-  [-1, -1],
-  [1, -1]
+	[1, 1],
+	[-1, 1],
+	[-1, -1],
+	[1, -1],
 ]
 
 export const QUEEN_DIRECTIONS = ROOK_DIRECTIONS.concat(BISHOP_DIRECTIONS)

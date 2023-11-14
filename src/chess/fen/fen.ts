@@ -1,17 +1,17 @@
 import { State } from '../chess.models'
 import {
-  boardToFen,
-  castlingAbilityToFen,
-  enPassantTargetSquareIndexToFen,
-  fenToBoard,
-  fenToCastlingAbility,
-  fenToEnPassantTargetSquareIndex,
-  fenToSideToMove,
-  fenToFullmoveCounter,
-  sideToMoveToFen,
-  fenToHalfmoveClock,
-  halfmoveClockToFen,
-  fullmoveCounterToFen
+	boardToFen,
+	castlingAbilityToFen,
+	enPassantTargetSquareIndexToFen,
+	fenToBoard,
+	fenToCastlingAbility,
+	fenToEnPassantTargetSquareIndex,
+	fenToSideToMove,
+	fenToFullmoveCounter,
+	sideToMoveToFen,
+	fenToHalfmoveClock,
+	halfmoveClockToFen,
+	fullmoveCounterToFen,
 } from './fen.lib'
 
 /**
@@ -19,25 +19,25 @@ import {
  * https://www.chessprogramming.org/Forsyth-Edwards_Notation
  */
 export function fenToState(fen: string): State {
-  const [
-    board,
-    sideToMove,
-    castlingAbility,
-    enPassantTargetSquareIndex,
-    halfmoveClock,
-    fullmoveCounter
-  ] = fen.split(' ')
+	const [
+		board,
+		sideToMove,
+		castlingAbility,
+		enPassantTargetSquareIndex,
+		halfmoveClock,
+		fullmoveCounter,
+	] = fen.split(' ')
 
-  return {
-    board: fenToBoard(board),
-    sideToMove: fenToSideToMove(sideToMove),
-    castlingAbility: fenToCastlingAbility(castlingAbility),
-    enPassantTargetSquareIndex: fenToEnPassantTargetSquareIndex(
-      enPassantTargetSquareIndex
-    ),
-    halfmoveClock: fenToHalfmoveClock(halfmoveClock),
-    fullmoveCounter: fenToFullmoveCounter(fullmoveCounter)
-  }
+	return {
+		board: fenToBoard(board),
+		sideToMove: fenToSideToMove(sideToMove),
+		castlingAbility: fenToCastlingAbility(castlingAbility),
+		enPassantTargetSquareIndex: fenToEnPassantTargetSquareIndex(
+			enPassantTargetSquareIndex,
+		),
+		halfmoveClock: fenToHalfmoveClock(halfmoveClock),
+		fullmoveCounter: fenToFullmoveCounter(fullmoveCounter),
+	}
 }
 
 /**
@@ -45,13 +45,13 @@ export function fenToState(fen: string): State {
  * https://www.chessprogramming.org/Forsyth-Edwards_Notation
  */
 export function stateToFen(state: State): string {
-  const fields = [
-    boardToFen(state.board),
-    sideToMoveToFen(state.sideToMove),
-    castlingAbilityToFen(state.castlingAbility),
-    enPassantTargetSquareIndexToFen(state.enPassantTargetSquareIndex),
-    halfmoveClockToFen(state.halfmoveClock),
-    fullmoveCounterToFen(state.fullmoveCounter)
-  ]
-  return fields.join(' ')
+	const fields = [
+		boardToFen(state.board),
+		sideToMoveToFen(state.sideToMove),
+		castlingAbilityToFen(state.castlingAbility),
+		enPassantTargetSquareIndexToFen(state.enPassantTargetSquareIndex),
+		halfmoveClockToFen(state.halfmoveClock),
+		fullmoveCounterToFen(state.fullmoveCounter),
+	]
+	return fields.join(' ')
 }
