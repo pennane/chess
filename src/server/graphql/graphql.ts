@@ -7,7 +7,8 @@ import { useServer } from 'graphql-ws/lib/use/ws'
 
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { getGraphqlResolvers } from './resolvers/root'
-import { GraphlRequestContext } from './graphql.models'
+import { GraphqlRequestContext, GraphqlPubSubKey } from './graphql.models'
+import { PubSub } from 'graphql-subscriptions'
 
 export function createApolloServer({
 	httpServer,
@@ -24,7 +25,7 @@ export function createApolloServer({
 
 	const serverCleanup = useServer({ schema }, wsServer)
 
-	const apolloServer = new ApolloServer<GraphlRequestContext>({
+	const apolloServer = new ApolloServer<GraphqlRequestContext>({
 		schema,
 		plugins: [
 			ApolloServerPluginDrainHttpServer({ httpServer }),
@@ -42,4 +43,13 @@ export function createApolloServer({
 	})
 
 	return apolloServer
+}
+
+export const pubsub = new PubSub()
+
+export function startPublishingTestPings() {
+	let i = 0
+	setInterval(() => {
+		pubsub.publish(GraphqlPubSubKey.TEST_PING, { ping: i++ })
+	}, 1000)
 }
