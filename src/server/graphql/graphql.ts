@@ -7,6 +7,7 @@ import { useServer } from 'graphql-ws/lib/use/ws'
 
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { getGraphqlResolvers } from './resolvers/root'
+import { GraphlRequestContext } from './graphql.models'
 
 export function createApolloServer({
 	httpServer,
@@ -23,7 +24,7 @@ export function createApolloServer({
 
 	const serverCleanup = useServer({ schema }, wsServer)
 
-	const apolloServer = new ApolloServer({
+	const apolloServer = new ApolloServer<GraphlRequestContext>({
 		schema,
 		plugins: [
 			ApolloServerPluginDrainHttpServer({ httpServer }),

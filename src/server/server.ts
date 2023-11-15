@@ -21,21 +21,22 @@ export async function startChessServer() {
 
 	await apolloServer.start()
 
-	// ehkä pitää lisää app.set('trust proxy', 1) ennenku tän siirtää frankfurttii
-
+	app.use(cors(corsOptions))
 	app.use(
 		session({
 			secret: 'keyboard cat',
 			resave: false,
 			saveUninitialized: true,
-			cookie: { secure: true },
 		}),
 	)
 	app.use(
 		'/graphql',
-		cors<cors.CorsRequest>(corsOptions),
 		json(),
-		expressMiddleware(apolloServer),
+		expressMiddleware(apolloServer, {
+			context: async (data: any) => {
+				return { sessionId: data.req.sessionID }
+			},
+		}),
 	)
 
 	return new Promise((resolve) =>
