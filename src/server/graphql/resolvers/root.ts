@@ -1,9 +1,15 @@
-import { GraphlRequestContext } from '../graphql.models'
+import { pubsub } from '../graphql'
+import { GraphqlRequestContext, GraphqlPubSubKey } from '../graphql.models'
 
 const root = {
 	Query: {
-		sessionId: (_root: any, _args: any, ctx: GraphlRequestContext) =>
+		sessionId: (_root: any, _args: any, ctx: GraphqlRequestContext) =>
 			ctx.sessionId,
+	},
+	Subscription: {
+		ping: {
+			subscribe: () => pubsub.asyncIterator([GraphqlPubSubKey.TEST_PING]),
+		},
 	},
 }
 

@@ -6,9 +6,10 @@ import { createExpressApp } from './express/express'
 import { createApolloServer } from './graphql/graphql'
 import { createHttpServer } from './http/http'
 import { createWsServer } from './ws/ws'
+import config from '../config'
 
 const corsOptions = {
-	origin: 'http://localhost:5173',
+	origin: config.CLIENT_URL,
 	credentials: true,
 	optionsSuccessStatus: 204,
 }
@@ -24,7 +25,7 @@ export async function startChessServer() {
 	app.use(cors(corsOptions))
 	app.use(
 		session({
-			secret: 'keyboard cat',
+			secret: config.SESSION_SECRET,
 			resave: false,
 			saveUninitialized: true,
 		}),
@@ -40,6 +41,6 @@ export async function startChessServer() {
 	)
 
 	return new Promise((resolve) =>
-		httpServer.listen(3000, () => resolve(true)),
+		httpServer.listen(config.PORT, () => resolve(true)),
 	)
 }
