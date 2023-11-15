@@ -1,20 +1,6 @@
-import { createInitialChessState } from './chess/chess.lib'
-import { computerVsComputerGameLoop, gameLoop } from './chess/gameLoop/gameLoop'
-import { promptForGameType } from './ui/prompt/prompt'
+import { startChessServer } from './server/server'
 import logger from './utils/logger'
 
-async function start() {
-	const state = createInitialChessState()
-
-	logger.info('CHESS - da bomb')
-
-	const gameType = await promptForGameType()
-
-	if (gameType === 'c') {
-		return computerVsComputerGameLoop(state)
-	}
-
-	gameLoop(state, gameType)
-}
-
-start()
+startChessServer()
+	.then(() => logger.info('server started'))
+	.catch(logger.error)
