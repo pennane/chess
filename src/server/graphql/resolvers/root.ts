@@ -1,8 +1,9 @@
+import { GraphlRequestContext } from '../graphql.models'
+
 const root = {
 	Query: {
-		hello: () => {
-			return 'Hello world!'
-		},
+		sessionId: (_root: any, _args: any, ctx: GraphlRequestContext) =>
+			ctx.sessionId,
 	},
 }
 
