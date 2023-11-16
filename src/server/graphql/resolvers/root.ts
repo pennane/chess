@@ -9,7 +9,8 @@ import {
 	toggleReady,
 } from '../../gameEngine/gameEngine'
 import { EngineChessGame } from '../../gameEngine/store/store.models'
-import { GraphqlRequestContext } from '../graphql.models'
+import { pubsub } from '../graphql'
+import { GraphqlPubSubKey, GraphqlRequestContext } from '../graphql.models'
 
 const root = {
 	Query: {
@@ -72,7 +73,18 @@ const root = {
 			return playMove(ctx.sessionId, args.gameId, args.move)
 		},
 	},
-	Subscription: {},
+	Subscription: {
+		chessGameStateChanged: {
+			subscribe: (
+				_root: any,
+				args: { gameId: string },
+				_ctx: GraphqlRequestContext,
+			) =>
+				pubsub.asyncIterator([
+					`${GraphqlPubSubKey.CHESSS_STATE_CHANGE}:${args.gameId}`,
+				]),
+		},
+	},
 }
 
 export function getGraphqlResolvers() {
