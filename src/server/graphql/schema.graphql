@@ -1,7 +1,67 @@
-type Query {
-	sessionId: ID!
+"""
+The color of a chess piece
+"""
+enum ChessPieceColor {
+	WHITE
+	BLACK
 }
 
+"""
+Various statuses a chess game can have
+"""
+enum ChessGameStatus {
+	NOT_STARTED
+	IN_PROGRESS
+	DRAW
+	STALEMATE
+	CHECKMATE
+	ABANDONED
+}
+
+"""
+Player in a chess game
+"""
+type ChessPlayer {
+	id: ID!
+	color: ChessPieceColor
+	ready: Boolean! # Indicates if the player is ready to start the game
+	desiresDraw: Boolean! # Indicates if the player wants to offer a draw
+}
+
+"""
+Chess game, including its current state and history
+"""
+type ChessGame {
+	id: ID!
+	fenString: String! # FEN string representing the current board state
+	players: [ChessPlayer!]!
+	status: ChessGameStatus!
+	moveHistory: [String!]! # History of moves made in the game
+}
+
+"""
+Queries available in the chess game API
+"""
+type Query {
+	gameById(gameId: ID!): ChessGame
+}
+
+"""
+Mutations available for changing the state of a chess game
+"""
+type Mutation {
+	createGame: ChessGame!
+	joinGame(gameId: ID!): ChessGame!
+	leaveGame(gameId: ID!): ChessGame!
+	resign(gameId: ID!): ChessGame!
+	toggleReady(gameId: ID!, ready: Boolean!): ChessGame!
+	toggleDrawDesire(gameId: ID!, desireDraw: Boolean!): ChessGame!
+	playMove(gameId: ID!, move: String!): ChessGame!
+}
+
+"""
+Realtime websocket subscriptions available for the chesss game API
+"""
 type Subscription {
-	ping: Int!
+	chessGameStateChanged(gameId: ID!): ChessGame!
 }
