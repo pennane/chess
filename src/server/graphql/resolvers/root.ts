@@ -1,16 +1,78 @@
-import { pubsub } from '../graphql'
-import { GraphqlRequestContext, GraphqlPubSubKey } from '../graphql.models'
+import {
+	createGame,
+	getGame,
+	joinGame,
+	leaveGame,
+	playMove,
+	resign,
+	toggleDrawDesire,
+	toggleReady,
+} from '../../gameEngine/gameEngine'
+import { EngineChessGame } from '../../gameEngine/store/store.models'
+import { GraphqlRequestContext } from '../graphql.models'
 
 const root = {
 	Query: {
-		sessionId: (_root: any, _args: any, ctx: GraphqlRequestContext) =>
-			ctx.sessionId,
-	},
-	Subscription: {
-		ping: {
-			subscribe: () => pubsub.asyncIterator([GraphqlPubSubKey.TEST_PING]),
+		gameById: (
+			_root: any,
+			args: { gameId: string },
+			_ctx: GraphqlRequestContext,
+		) => {
+			return getGame(args.gameId)
 		},
 	},
+	Mutation: {
+		createGame(
+			_root: any,
+			_args: any,
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return createGame(ctx.sessionId)
+		},
+		joinGame(
+			_root: any,
+			args: { gameId: string },
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return joinGame(ctx.sessionId, args.gameId)
+		},
+		leaveGame(
+			_root: any,
+			args: { gameId: string },
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return leaveGame(ctx.sessionId, args.gameId)
+		},
+		resign(
+			_root: any,
+			args: { gameId: string },
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return resign(ctx.sessionId, args.gameId)
+		},
+		toggleReady(
+			_root: any,
+			args: { gameId: string; ready: boolean },
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return toggleReady(ctx.sessionId, args.gameId, args.ready)
+		},
+		toggleDrawDesire(
+			_root: any,
+			args: { gameId: string; desireDraw: boolean },
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return toggleDrawDesire(ctx.sessionId, args.gameId, args.desireDraw)
+		},
+		playMove(
+			_root: any,
+			args: { gameId: string; move: string },
+			ctx: GraphqlRequestContext,
+		): EngineChessGame {
+			return playMove(ctx.sessionId, args.gameId, args.move)
+		},
+	},
+	Subscription: {},
 }
 
 export function getGraphqlResolvers() {
