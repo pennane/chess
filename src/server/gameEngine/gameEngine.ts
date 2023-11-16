@@ -7,6 +7,7 @@ import {
 	EngineChessGameStatus,
 } from './store/store.models'
 import { playMove as playChessMove } from '../../chess/moves/moves'
+import { publishGameStateChange } from '../graphql/graphql'
 
 export function getGame(gameId: string) {
 	const store = getGameStore()
@@ -33,6 +34,8 @@ export function joinGame(playerId: string, gameId: string): EngineChessGame {
 	const newPlayers = game.players.concat(createPlayer(playerId))
 	game.players = newPlayers
 
+	publishGameStateChange(game.id, game)
+
 	return game
 }
 export function leaveGame(playerId: string, gameId: string): EngineChessGame {
@@ -45,6 +48,8 @@ export function leaveGame(playerId: string, gameId: string): EngineChessGame {
 	const newPlayers = game.players.filter((p) => p.id === playerId)
 	game.players = newPlayers
 
+	publishGameStateChange(game.id, game)
+
 	return game
 }
 export function resign(playerId: string, gameId: string): EngineChessGame {
@@ -55,6 +60,8 @@ export function resign(playerId: string, gameId: string): EngineChessGame {
 	}
 
 	game.status = EngineChessGameStatus.ABANDONED
+
+	publishGameStateChange(game.id, game)
 
 	return game
 }
@@ -88,6 +95,8 @@ export function toggleReady(
 
 	game.players = newPlayers
 
+	publishGameStateChange(game.id, game)
+
 	return game
 }
 export function toggleDrawDesire(
@@ -114,6 +123,8 @@ export function toggleDrawDesire(
 
 	game.players = newPlayers
 
+	publishGameStateChange(game.id, game)
+
 	return game
 }
 export function playMove(
@@ -134,6 +145,8 @@ export function playMove(
 	const state = fenToState(game.fenString)
 	const newState = playChessMove(move, state)
 	game.fenString = stateToFen(newState)
+
+	publishGameStateChange(game.id, game)
 
 	return game
 }
