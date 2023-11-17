@@ -24,3 +24,34 @@ export function createInitialGame(playerId: string): EngineChessGame {
 		status: EngineChessGameStatus.NOT_STARTED,
 	}
 }
+
+export function validateGameExists(
+	game: EngineChessGame | undefined,
+): asserts game is EngineChessGame {
+	if (!game) throw new Error('No game with that id')
+}
+
+export function validateUserInGame(playerId: string, game: EngineChessGame) {
+	if (game.players.every((p) => p.id !== playerId)) {
+		throw new Error('You are not part of the game')
+	}
+}
+
+export function validateCanJoinGame(playerId: string, game: EngineChessGame) {
+	if (game.players.some((p) => p.id === playerId)) {
+		throw new Error('You are already part of the game')
+	}
+
+	if (game.players.length >= 2) {
+		throw new Error('Game is full')
+	}
+}
+
+export function validateGameIsInSpecificState(
+	status: EngineChessGameStatus,
+	game: EngineChessGame,
+) {
+	if (game.status !== status) {
+		throw new Error(`Game not in ${status}`)
+	}
+}

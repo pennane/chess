@@ -1,5 +1,12 @@
 import { fenToState, stateToFen } from '../../chess/fen/fen'
-import { createInitialGame, createPlayer } from './gameEngine.lib'
+import {
+	createInitialGame,
+	createPlayer,
+	validateCanJoinGame,
+	validateGameExists,
+	validateGameIsInSpecificState,
+	validateUserInGame,
+} from './gameEngine.lib'
 import { getGameFromStore, getGameStore } from './store/store'
 import {
 	EngineChessColor,
@@ -10,8 +17,7 @@ import { playMove as playChessMove } from '../../chess/moves/moves'
 import { publishGameStateChange } from '../graphql/graphql'
 
 export function getGame(gameId: string) {
-	const store = getGameStore()
-	return store.get(gameId)
+	return getGameFromStore(gameId)
 }
 
 export function createGame(playerId: string): EngineChessGame {
@@ -22,14 +28,8 @@ export function createGame(playerId: string): EngineChessGame {
 }
 export function joinGame(playerId: string, gameId: string): EngineChessGame {
 	const game = getGameFromStore(gameId)
-
-	if (game.players.some((p) => p.id === playerId)) {
-		throw new Error('You are already part of the game')
-	}
-
-	if (game.players.length >= 2) {
-		throw new Error('Game is full')
-	}
+	validateGameExists(game)
+	validateCanJoinGame(playerId, game)
 
 	const newPlayers = game.players.concat(createPlayer(playerId))
 	game.players = newPlayers
@@ -41,9 +41,8 @@ export function joinGame(playerId: string, gameId: string): EngineChessGame {
 export function leaveGame(playerId: string, gameId: string): EngineChessGame {
 	const game = getGameFromStore(gameId)
 
-	if (game.players.every((p) => p.id !== playerId)) {
-		throw new Error('You are not part of the game')
-	}
+	validateGameExists(game)
+	validateUserInGame(playerId, game)
 
 	const newPlayers = game.players.filter((p) => p.id === playerId)
 	game.players = newPlayers
@@ -54,10 +53,8 @@ export function leaveGame(playerId: string, gameId: string): EngineChessGame {
 }
 export function resign(playerId: string, gameId: string): EngineChessGame {
 	const game = getGameFromStore(gameId)
-
-	if (game.players.every((p) => p.id !== playerId)) {
-		throw new Error('You are not part of the game')
-	}
+	validateGameExists(game)
+	validateUserInGame(playerId, game)
 
 	game.status = EngineChessGameStatus.ABANDONED
 
@@ -72,9 +69,8 @@ export function toggleReady(
 ): EngineChessGame {
 	const game = getGameFromStore(gameId)
 
-	if (game.players.every((p) => p.id !== playerId)) {
-		throw new Error('You are not part of the game')
-	}
+	validateGameExists(game)
+	validateUserInGame(playerId, game)
 
 	const newPlayers = game.players.map((p) =>
 		p.id === playerId ? { ...p, ready } : p,
@@ -106,9 +102,8 @@ export function toggleDrawDesire(
 ): EngineChessGame {
 	const game = getGameFromStore(gameId)
 
-	if (game.players.every((p) => p.id !== playerId)) {
-		throw new Error('You are not part of the game')
-	}
+	validateGameExists(game)
+	validateUserInGame(playerId, game)
 
 	const newPlayers = game.players.map((p) =>
 		p.id === playerId ? { ...p, desiresDraw } : p,
@@ -134,13 +129,9 @@ export function playMove(
 ): EngineChessGame {
 	const game = getGameFromStore(gameId)
 
-	if (game.players.every((p) => p.id !== playerId)) {
-		throw new Error('You are not part of the game')
-	}
-
-	if (game.status !== EngineChessGameStatus.IN_PROGRESS) {
-		throw new Error('Game not in progress')
-	}
+	validateGameExists(game)
+	validateUserInGame(playerId, game)
+	validateGameIsInSpecificState(EngineChessGameStatus.IN_PROGRESS, game)
 
 	const state = fenToState(game.fenString)
 	const newState = playChessMove(move, state)
