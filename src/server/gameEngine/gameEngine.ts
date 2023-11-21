@@ -1,4 +1,3 @@
-import { fenToState, stateToFen } from '../../chess/fen/fen'
 import {
 	createInitialGame,
 	createPlayer,
@@ -15,6 +14,7 @@ import {
 } from './store/store.models'
 import { playMove as playChessMove } from '../../chess/moves/moves'
 import { publishGameStateChange } from '../graphql/graphql'
+import { fenToState, stateToFen } from '../../chess/serialization/fen/fen'
 
 export function getGame(gameId: string) {
 	return getGameFromStore(gameId)
@@ -56,7 +56,7 @@ export function resign(playerId: string, gameId: string): EngineChessGame {
 	validateGameExists(game)
 	validateUserInGame(playerId, game)
 
-	game.status = EngineChessGameStatus.ABANDONED
+	game.status = EngineChessGameStatus.RESIGNED
 
 	publishGameStateChange(game.id, game)
 
