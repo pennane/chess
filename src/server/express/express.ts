@@ -34,7 +34,7 @@ export function registerMiddleware({
 		}),
 	)
 	expressApp.use(
-		'/graphql',
+		config.GRAPHQL_API_ENDPOINT,
 		json(),
 		expressMiddleware(apolloServer, {
 			context: async (data: any) => {
