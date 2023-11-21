@@ -21,6 +21,9 @@ const root = {
 		) => {
 			return getGame(args.gameId)
 		},
+		currentUserId: (_root: any, _args: any, ctx: GraphqlRequestContext) => {
+			return ctx.sessionId
+		},
 	},
 	Mutation: {
 		createGame(

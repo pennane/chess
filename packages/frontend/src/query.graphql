@@ -1,0 +1,138 @@
+query GetGame($id: ID!) {
+  gameById(gameId: $id) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation CreateGame {
+  createGame {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation JoinGame($id: ID!) {
+  joinGame(gameId: $id) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation ToggleReady($id: ID!, $ready: Boolean!) {
+  toggleReady(gameId: $id, ready: $ready) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation ToggleDrawDesire($id: ID!, $ready: Boolean!) {
+  toggleDrawDesire(gameId: $id, desireDraw: $ready) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation PlayMove($id: ID!, $move: String!) {
+  playMove(gameId: $id, move: $move) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation LeaveGame($id: ID!) {
+  leaveGame(gameId: $id) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+mutation Resign($id: ID!) {
+  resign(gameId: $id) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+subscription ChessGameStateChanged($id: ID!) {
+  chessGameStateChanged(gameId: $id) {
+    id
+    fenString
+    players {
+      id
+      color
+      ready
+      desiresDraw
+    }
+    status
+    moveHistory
+  }
+}
+
+query CurrentUserId {
+  currentUserId
+}
