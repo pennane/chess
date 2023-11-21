@@ -9,7 +9,7 @@ import {
 	toggleReady,
 } from '../../gameEngine/gameEngine'
 import { EngineChessGame } from '../../gameEngine/store/store.models'
-import { pubsub } from '../graphql'
+import { publishGameStateChange, pubsub } from '../graphql'
 import { GraphqlPubSubKey, GraphqlRequestContext } from '../graphql.models'
 
 const root = {
@@ -19,7 +19,8 @@ const root = {
 			args: { gameId: string },
 			_ctx: GraphqlRequestContext,
 		) => {
-			return getGame(args.gameId)
+			const game = getGame(args.gameId)
+			return game
 		},
 	},
 	Mutation: {
@@ -28,49 +29,66 @@ const root = {
 			_args: any,
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return createGame(ctx.sessionId)
+			const game = createGame(ctx.sessionId)
+			return game
 		},
 		joinGame(
 			_root: any,
 			args: { gameId: string },
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return joinGame(ctx.sessionId, args.gameId)
+			const game = joinGame(ctx.sessionId, args.gameId)
+			publishGameStateChange(game.id, game)
+			return game
 		},
 		leaveGame(
 			_root: any,
 			args: { gameId: string },
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return leaveGame(ctx.sessionId, args.gameId)
+			const game = leaveGame(ctx.sessionId, args.gameId)
+			publishGameStateChange(game.id, game)
+			return game
 		},
 		resign(
 			_root: any,
 			args: { gameId: string },
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return resign(ctx.sessionId, args.gameId)
+			const game = resign(ctx.sessionId, args.gameId)
+			publishGameStateChange(game.id, game)
+			return game
 		},
 		toggleReady(
 			_root: any,
 			args: { gameId: string; ready: boolean },
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return toggleReady(ctx.sessionId, args.gameId, args.ready)
+			const game = toggleReady(ctx.sessionId, args.gameId, args.ready)
+			publishGameStateChange(game.id, game)
+			return game
 		},
 		toggleDrawDesire(
 			_root: any,
 			args: { gameId: string; desireDraw: boolean },
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return toggleDrawDesire(ctx.sessionId, args.gameId, args.desireDraw)
+			const game = toggleDrawDesire(
+				ctx.sessionId,
+				args.gameId,
+				args.desireDraw,
+			)
+			publishGameStateChange(game.id, game)
+			return game
 		},
 		playMove(
 			_root: any,
 			args: { gameId: string; move: string },
 			ctx: GraphqlRequestContext,
 		): EngineChessGame {
-			return playMove(ctx.sessionId, args.gameId, args.move)
+			const game = playMove(ctx.sessionId, args.gameId, args.move)
+			publishGameStateChange(game.id, game)
+			return game
 		},
 	},
 	Subscription: {

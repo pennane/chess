@@ -1,4 +1,5 @@
 import {
+	assignRandomColorsForPlayers,
 	createInitialGame,
 	createPlayer,
 	validateCanJoinGame,
@@ -7,13 +8,8 @@ import {
 	validateUserInGame,
 } from './gameEngine.lib'
 import { getGameFromStore, getGameStore } from './store/store'
-import {
-	EngineChessColor,
-	EngineChessGame,
-	EngineChessGameStatus,
-} from './store/store.models'
+import { EngineChessGame, EngineChessGameStatus } from './store/store.models'
 import { playMove as playChessMove } from '../../chess/moves/moves'
-import { publishGameStateChange } from '../graphql/graphql'
 import { fenToState, stateToFen } from '../../chess/serialization/fen/fen'
 
 export function getGame(gameId: string) {
@@ -34,8 +30,6 @@ export function joinGame(playerId: string, gameId: string): EngineChessGame {
 	const newPlayers = game.players.concat(createPlayer(playerId))
 	game.players = newPlayers
 
-	publishGameStateChange(game.id, game)
-
 	return game
 }
 export function leaveGame(playerId: string, gameId: string): EngineChessGame {
@@ -47,8 +41,6 @@ export function leaveGame(playerId: string, gameId: string): EngineChessGame {
 	const newPlayers = game.players.filter((p) => p.id === playerId)
 	game.players = newPlayers
 
-	publishGameStateChange(game.id, game)
-
 	return game
 }
 export function resign(playerId: string, gameId: string): EngineChessGame {
@@ -57,8 +49,6 @@ export function resign(playerId: string, gameId: string): EngineChessGame {
 	validateUserInGame(playerId, game)
 
 	game.status = EngineChessGameStatus.RESIGNED
-
-	publishGameStateChange(game.id, game)
 
 	return game
 }
@@ -78,20 +68,10 @@ export function toggleReady(
 
 	if (newPlayers.length === 2 && newPlayers.every((p) => p.ready === true)) {
 		game.status = EngineChessGameStatus.IN_PROGRESS
-		const firstColor =
-			Math.random() > 0.5
-				? EngineChessColor.WHITE
-				: EngineChessColor.BLACK
-		newPlayers[0].color = firstColor
-		newPlayers[1].color =
-			firstColor === EngineChessColor.WHITE
-				? EngineChessColor.BLACK
-				: EngineChessColor.WHITE
+		assignRandomColorsForPlayers(newPlayers)
 	}
 
 	game.players = newPlayers
-
-	publishGameStateChange(game.id, game)
 
 	return game
 }
@@ -118,8 +98,6 @@ export function toggleDrawDesire(
 
 	game.players = newPlayers
 
-	publishGameStateChange(game.id, game)
-
 	return game
 }
 export function playMove(
@@ -136,8 +114,6 @@ export function playMove(
 	const state = fenToState(game.fenString)
 	const newState = playChessMove(move, state)
 	game.fenString = stateToFen(newState)
-
-	publishGameStateChange(game.id, game)
 
 	return game
 }

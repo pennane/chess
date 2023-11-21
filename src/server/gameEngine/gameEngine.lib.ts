@@ -1,6 +1,7 @@
-import { INITIAL_CHESS_BOARD_FEN_STRING } from '../../chess/fen/fen.constants'
+import { INITIAL_CHESS_BOARD_FEN_STRING } from '../../chess/serialization/fen/fen.constants'
 import { createId } from '../../utils/uuid'
 import {
+	EngineChessColor,
 	EngineChessGame,
 	EngineChessGameStatus,
 	EngineChessPlayer,
@@ -23,6 +24,18 @@ export function createInitialGame(playerId: string): EngineChessGame {
 		players: [createPlayer(playerId)],
 		status: EngineChessGameStatus.NOT_STARTED,
 	}
+}
+
+export function assignRandomColorsForPlayers(players: EngineChessPlayer[]) {
+	const firstColor =
+		Math.random() > 0.5 ? EngineChessColor.WHITE : EngineChessColor.BLACK
+
+	players[0].color = firstColor
+
+	players[1].color =
+		firstColor === EngineChessColor.WHITE
+			? EngineChessColor.BLACK
+			: EngineChessColor.WHITE
 }
 
 export function validateGameExists(
