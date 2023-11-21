@@ -17,9 +17,10 @@ export function createApolloServer({
 	wsServer: WebSocketServer
 	httpServer: Server
 }) {
-	const typeDefs = fs.readFileSync('./src/server/graphql/schema.graphql', {
+	const typeDefs = fs.readFileSync(`${__dirname}/schema.graphql`, {
 		encoding: 'utf-8',
 	})
+
 	const resolvers = getGraphqlResolvers()
 	const schema = makeExecutableSchema({ typeDefs, resolvers })
 
