@@ -9,9 +9,14 @@ function info(...args: any[]): void {
 	console.info(...args)
 }
 
+function error(...args: any[]): void {
+	console.error(args)
+}
+
 const logger = {
 	info,
 	debug,
+	error,
 }
 
 export default logger

@@ -1,0 +1,7 @@
+type Query {
+	sessionId: ID!
+}
+
+type Subscription {
+	ping: Int!
+}
