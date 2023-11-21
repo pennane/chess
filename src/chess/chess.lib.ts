@@ -1,28 +1,7 @@
-import { CHESS_BOARD_SIZE, PROMOTABLE_PIECES } from './chess.constants'
+import { CHESS_BOARD_SIZE } from './chess.constants'
 import { ChessPiece, Square, SquareIndex, State } from './chess.models'
-
-export function parseFile(file: string): number | null {
-	const fileNumber = file.charCodeAt(0) - 'a'.charCodeAt(0)
-	if (fileNumber < 0 || fileNumber > 7) return null
-	return fileNumber
-}
-
-export function parseRank(rank: string): number | null {
-	const parsedRank = parseInt(rank) - 1
-
-	if (parsedRank < 0 || parsedRank > 7) return null
-	return parsedRank
-}
-
-export function parsePromotionPiece(
-	piece: string,
-): (typeof PROMOTABLE_PIECES)[number] | undefined {
-	if (!piece) return undefined
-	if (PROMOTABLE_PIECES.includes(piece.toLowerCase() as any)) {
-		return piece.toLowerCase() as any
-	}
-	return undefined
-}
+import { fenToState } from './serialization/fen/fen'
+import { INITIAL_CHESS_BOARD_FEN_STRING } from './serialization/fen/fen.constants'
 
 export function getPiece(
 	square: Square | SquareIndex,
@@ -51,4 +30,8 @@ export function indexToSquare(index: number): Square {
 
 export function squareToIndex(square: Square): SquareIndex {
 	return square.rank * CHESS_BOARD_SIZE + square.file
+}
+
+export function createInitialChessState(): State {
+	return fenToState(INITIAL_CHESS_BOARD_FEN_STRING)
 }

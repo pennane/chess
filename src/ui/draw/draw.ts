@@ -1,6 +1,6 @@
 import { CHESS_BOARD_SIZE, WHITE } from '../../chess/chess.constants'
 import { Color, State } from '../../chess/chess.models'
-import { stateToFen } from '../../chess/fen/fen'
+import { stateToFen } from '../../chess/serialization/fen/fen'
 import logger from '../../utils/logger'
 import { pieceToSymbol } from './draw.lib'
 
