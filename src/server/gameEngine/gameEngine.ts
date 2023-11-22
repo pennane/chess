@@ -62,16 +62,21 @@ export function toggleReady(
 	validateGameExists(game)
 	validateUserInGame(playerId, game)
 
-	const newPlayers = game.players.map((p) =>
+	const playersAfterToggledReady = game.players.map((p) =>
 		p.id === playerId ? { ...p, ready } : p,
 	)
+	game.players = playersAfterToggledReady
 
-	if (newPlayers.length === 2 && newPlayers.every((p) => p.ready === true)) {
-		game.status = EngineChessGameStatus.IN_PROGRESS
-		assignRandomColorsForPlayers(newPlayers)
+	if (
+		playersAfterToggledReady.length !== 2 ||
+		playersAfterToggledReady.some((p) => p.ready === false)
+	) {
+		return game
 	}
 
-	game.players = newPlayers
+	game.status = EngineChessGameStatus.IN_PROGRESS
+
+	assignRandomColorsForPlayers(playersAfterToggledReady)
 
 	return game
 }
@@ -85,18 +90,19 @@ export function toggleDrawDesire(
 	validateGameExists(game)
 	validateUserInGame(playerId, game)
 
-	const newPlayers = game.players.map((p) =>
+	const playersAfterToggledDraw = game.players.map((p) =>
 		p.id === playerId ? { ...p, desiresDraw } : p,
 	)
+	game.players = playersAfterToggledDraw
 
 	if (
-		newPlayers.length === 2 &&
-		newPlayers.every((p) => p.desiresDraw === true)
+		playersAfterToggledDraw.length !== 2 ||
+		!playersAfterToggledDraw.every((p) => p.desiresDraw === true)
 	) {
-		game.status = EngineChessGameStatus.DRAW
+		return game
 	}
 
-	game.players = newPlayers
+	game.status = EngineChessGameStatus.DRAW
 
 	return game
 }
