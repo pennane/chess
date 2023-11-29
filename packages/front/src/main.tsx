@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import { ApolloProvider } from '@apollo/client'
 import './index.css'
-import { apolloClient } from './graphql.ts'
+import { apolloClient } from './graphql/client.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
