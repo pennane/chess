@@ -1,92 +1,179 @@
 lockfileVersion: '6.0'
 
-dependencies:
-  '@apollo/server':
-    specifier: ^4.9.5
-    version: 4.9.5(graphql@16.8.1)
-  '@graphql-tools/schema':
-    specifier: ^10.0.0
-    version: 10.0.0(graphql@16.8.1)
-  body-parser:
-    specifier: ^1.20.2
-    version: 1.20.2
-  cors:
-    specifier: ^2.8.5
-    version: 2.8.5
-  dotenv:
-    specifier: ^16.3.1
-    version: 16.3.1
-  express:
-    specifier: ^4.18.2
-    version: 4.18.2
-  express-session:
-    specifier: ^1.17.3
-    version: 1.17.3
-  graphql:
-    specifier: ^16.8.1
-    version: 16.8.1
-  graphql-subscriptions:
-    specifier: ^2.0.0
-    version: 2.0.0(graphql@16.8.1)
-  graphql-ws:
-    specifier: ^5.14.2
-    version: 5.14.2(graphql@16.8.1)
-  nodemon:
-    specifier: ^3.0.1
-    version: 3.0.1
-  ramda:
-    specifier: ^0.29.1
-    version: 0.29.1
-  ws:
-    specifier: ^8.14.2
-    version: 8.14.2
-  zod:
-    specifier: ^3.22.4
-    version: 3.22.4
+importers:
 
-devDependencies:
-  '@types/body-parser':
-    specifier: ^1.19.5
-    version: 1.19.5
-  '@types/cors':
-    specifier: ^2.8.16
-    version: 2.8.16
-  '@types/express':
-    specifier: ^4.17.21
-    version: 4.17.21
-  '@types/express-session':
-    specifier: ^1.17.10
-    version: 1.17.10
-  '@types/node':
-    specifier: ^20.8.10
-    version: 20.8.10
-  '@types/ramda':
-    specifier: ^0.29.7
-    version: 0.29.7
-  '@types/ws':
-    specifier: ^8.5.9
-    version: 8.5.9
-  '@typescript-eslint/eslint-plugin':
-    specifier: ^6.11.0
-    version: 6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2)
-  eslint:
-    specifier: ^8.0.1
-    version: 8.53.0
-  eslint-config-prettier:
-    specifier: ^9.0.0
-    version: 9.0.0(eslint@8.53.0)
-  eslint-plugin-prettier:
-    specifier: ^5.0.1
-    version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.1.0)
-  pkg:
-    specifier: ^5.8.1
-    version: 5.8.1
-  ts-node:
-    specifier: ^10.9.1
-    version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
-  typescript:
-    specifier: ^5.2.2
-    version: 5.2.2
+  .:
+    dependencies:
+      '@apollo/server':
+        specifier: ^4.9.5
+        version: 4.9.5(graphql@16.8.1)
+      '@graphql-tools/schema':
+        specifier: ^10.0.0
+        version: 10.0.0(graphql@16.8.1)
+      body-parser:
+        specifier: ^1.20.2
+        version: 1.20.2
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
+      express:
+        specifier: ^4.18.2
+        version: 4.18.2
+      express-session:
+        specifier: ^1.17.3
+        version: 1.17.3
+      graphql:
+        specifier: ^16.8.1
+        version: 16.8.1
+      graphql-subscriptions:
+        specifier: ^2.0.0
+        version: 2.0.0(graphql@16.8.1)
+      graphql-ws:
+        specifier: ^5.14.2
+        version: 5.14.2(graphql@16.8.1)
+      nodemon:
+        specifier: ^3.0.1
+        version: 3.0.1
+      ramda:
+        specifier: ^0.29.1
+        version: 0.29.1
+      ws:
+        specifier: ^8.14.2
+        version: 8.14.2
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@types/body-parser':
+        specifier: ^1.19.5
+        version: 1.19.5
+      '@types/cors':
+        specifier: ^2.8.16
+        version: 2.8.16
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/express-session':
+        specifier: ^1.17.10
+        version: 1.17.10
+      '@types/node':
+        specifier: ^20.8.10
+        version: 20.8.10
+      '@types/ramda':
+        specifier: ^0.29.7
+        version: 0.29.7
+      '@types/ws':
+        specifier: ^8.5.9
+        version: 8.5.9
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.11.0
+        version: 6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2)
+      eslint:
+        specifier: ^8.0.1
+        version: 8.53.0
+      eslint-config-prettier:
+        specifier: ^9.0.0
+        version: 9.0.0(eslint@8.53.0)
+      eslint-plugin-prettier:
+        specifier: ^5.0.1
+        version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.1.0)
+      pkg:
+        specifier: ^5.8.1
+        version: 5.8.1
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  packages/backend:
+    dependencies:
+      '@apollo/server':
+        specifier: ^4.9.5
+        version: 4.9.5(graphql@16.8.1)
+      '@graphql-tools/schema':
+        specifier: ^10.0.0
+        version: 10.0.0(graphql@16.8.1)
+      body-parser:
+        specifier: ^1.20.2
+        version: 1.20.2
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
+      express:
+        specifier: ^4.18.2
+        version: 4.18.2
+      express-session:
+        specifier: ^1.17.3
+        version: 1.17.3
+      graphql:
+        specifier: ^16.8.1
+        version: 16.8.1
+      graphql-subscriptions:
+        specifier: ^2.0.0
+        version: 2.0.0(graphql@16.8.1)
+      graphql-ws:
+        specifier: ^5.14.2
+        version: 5.14.2(graphql@16.8.1)
+      nodemon:
+        specifier: ^3.0.1
+        version: 3.0.1
+      ramda:
+        specifier: ^0.29.1
+        version: 0.29.1
+      ws:
+        specifier: ^8.14.2
+        version: 8.14.2
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@types/body-parser':
+        specifier: ^1.19.5
+        version: 1.19.5
+      '@types/cors':
+        specifier: ^2.8.16
+        version: 2.8.16
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/express-session':
+        specifier: ^1.17.10
+        version: 1.17.10
+      '@types/node':
+        specifier: ^20.8.10
+        version: 20.8.10
+      '@types/ramda':
+        specifier: ^0.29.7
+        version: 0.29.7
+      '@types/ws':
+        specifier: ^8.5.9
+        version: 8.5.9
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.11.0
+        version: 6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.53.0)(typescript@5.2.2)
+      eslint:
+        specifier: ^8.0.1
+        version: 8.53.0
+      eslint-config-prettier:
+        specifier: ^9.0.0
+        version: 9.0.0(eslint@8.53.0)
+      eslint-plugin-prettier:
+        specifier: ^5.0.1
+        version: 5.0.1(eslint-config-prettier@9.0.0)(eslint@8.53.0)(prettier@3.1.0)
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.8.10)(typescript@5.2.2)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
 
 packages:
 
@@ -284,8 +371,8 @@ packages:
       jsesc: 2.5.2
     dev: true
 
-  /@babel/helper-string-parser@7.22.5:
-    resolution: {integrity: sha512-mM4COjgZox8U+JcXQwPijIZLElkgEpO5rsERVDJTc2qfCDfERyob6k5WegS14SX18IIjv+XD+GrqNumY5JRCDw==}
+  /@babel/helper-string-parser@7.23.4:
+    resolution: {integrity: sha512-803gmbQdqwdf4olxrX4AJyFBV/RTr3rSmOj0rKwesmzlfhYNDEs+/iOcznzpNWlJlIlTJC2QfPFcHB6DlzdVLQ==}
     engines: {node: '>=6.9.0'}
     dev: true
 
@@ -306,7 +393,7 @@ packages:
     resolution: {integrity: sha512-YuGopBq3ke25BVSiS6fgF49Ul9gH1x70Bcr6bqRLjWCkcX8Hre1/5+z+IiWOIerRMSSEfGZVB9z9kyq7wVs9YA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/helper-string-parser': 7.22.5
+      '@babel/helper-string-parser': 7.23.4
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
     dev: true

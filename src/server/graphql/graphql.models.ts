@@ -3,5 +3,5 @@ export type GraphqlRequestContext = {
 }
 
 export enum GraphqlPubSubKey {
-	TEST_PING = 'test_ping',
+	CHESSS_STATE_CHANGE = 'CHESS_STATE_CHANGE',
 }
