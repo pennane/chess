@@ -28,15 +28,13 @@ export function fenToCastlingAbility(
   }
 }
 
-export function fenToEnPassantTargetSquareIndex(
-  fen: string
-): TChessSquareIndex | null {
+export function fenToEnPassantTargetSquare(fen: string): TChessSquare | null {
   if (fen === '-') return null
   const [file, rank, ...rest] = fen.split('')
   const parsedFile = parseFile(file)
   const parsedRank = parseRank(rank)
   if (rest.length > 1 || !parsedFile || !parsedRank) return null
-  return squareToIndex({ file: parsedFile, rank: parsedRank })
+  return { file: parsedFile, rank: parsedRank }
 }
 
 export function fenToSideToMove(fen: string): TChessPieceColor {
@@ -88,7 +86,7 @@ export function fenStringToState(fenString: string): TChessState {
     board: fenToBoard(board),
     sideToMove: fenToSideToMove(sideToMove),
     castlingAbility: fenToCastlingAbility(castlingAbility),
-    enPassantTargetSquareIndex: fenToEnPassantTargetSquareIndex(
+    enPassantTargetSquare: fenToEnPassantTargetSquare(
       enPassantTargetSquareIndex
     ),
     halfmoveClock: fenToHalfmoveClock(halfmoveClock),

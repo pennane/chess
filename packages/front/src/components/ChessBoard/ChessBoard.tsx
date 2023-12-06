@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { TChessBoard, TChessPieceColor } from '../../chess/chess.models'
 import styled from 'styled-components'
 import { ChessBoardSquare } from './components/ChessBoardSquare/ChessBoardSquare'
-import { coordinateToSquareColor, parseRanks } from './ChessBoard.lib'
+import { parseRanks } from './ChessBoard.lib'
 
 const StyledChessBoard = styled.div`
   display: flex;
@@ -20,16 +20,19 @@ export type TChessBoardProps = {
 
 export const ChessBoard: FC<TChessBoardProps> = ({ board, sidePlaying }) => {
   const ranks = parseRanks(board, sidePlaying)
+  const onPieceDrop = (...args: unknown[]) => console.log(...args)
 
   return (
     <StyledChessBoard>
-      {ranks.map((rank, y) => (
-        <StyledRank key={y}>
-          {rank.map((piece, x) => (
+      {ranks.map((rank, rankIndex) => (
+        <StyledRank key={rankIndex}>
+          {rank.map((piece, fileIndex) => (
             <ChessBoardSquare
-              key={x}
+              key={fileIndex}
               chessPiece={piece}
-              squareColor={coordinateToSquareColor(x, y)}
+              rank={rankIndex}
+              file={fileIndex}
+              onPieceDrop={onPieceDrop}
             />
           ))}
         </StyledRank>
