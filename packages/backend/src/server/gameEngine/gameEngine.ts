@@ -135,7 +135,7 @@ export function playMove(
 	const possibleMoves = generateMoves(newState)
 
 	if (isEmpty(possibleMoves)) {
-		const inCheck = isInCheck(state)
+		const inCheck = isInCheck(newState)
 		if (inCheck) {
 			game.status = EngineChessGameStatus.CHECKMATE
 		} else {
