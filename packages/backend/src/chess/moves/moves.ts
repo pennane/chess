@@ -40,6 +40,24 @@ export function generateMovesForSquareIndex(
 	}
 }
 
+export function generateLegalMovesForSquareIndex(
+	state: State,
+	squareIndex: SquareIndex,
+): Move[] {
+	const moves = generateMovesForSquareIndex(state, squareIndex)
+
+	const kingPosition = findPiecePosition(state.board, {
+		color: state.sideToMove,
+		type: KING,
+	})!
+
+	const legalMoves = moves.filter((move) =>
+		isLegalMove(state, move, kingPosition),
+	)
+
+	return legalMoves
+}
+
 export function generateMoves(state: State): Move[] {
 	const moves: Move[] = []
 

@@ -8,7 +8,10 @@ import {
 	SquareIndex,
 	State,
 } from '../chess.models'
-import { generateMovesForSquareIndex } from './moves'
+import {
+	generateLegalMovesForSquareIndex,
+	generateMovesForSquareIndex,
+} from './moves'
 import { simulateMove } from './simulate/simulate'
 
 export function isLegalMove(
@@ -51,7 +54,7 @@ export function isInCheck(state: State) {
 }
 
 export function validateMove(state: State, move: Move) {
-	const generatedMoves = generateMovesForSquareIndex(state, move.from)
+	const generatedMoves = generateLegalMovesForSquareIndex(state, move.from)
 	const validatedMove = generatedMoves.find(
 		(m) =>
 			move.from === m.from &&
