@@ -81,10 +81,23 @@ export function validatePlayerOwnsMovedPiece(
 	if (!player || !move) {
 		throw new Error('Invalid move')
 	}
+	const movedPiece = state.board[move.from]
 
-	if (state.sideToMove === 'b' && player.color === EngineChessColor.BLACK)
+	if (!movedPiece) {
+		throw new Error('No piece was moved')
+	}
+
+	if (
+		state.sideToMove === 'b' &&
+		player.color === EngineChessColor.BLACK &&
+		movedPiece.color === 'b'
+	)
 		return
-	if (state.sideToMove === 'w' && player.color === EngineChessColor.WHITE)
+	if (
+		state.sideToMove === 'w' &&
+		player.color === EngineChessColor.WHITE &&
+		movedPiece.color === 'w'
+	)
 		return
 
 	throw new Error('You do not own the moved piece')
