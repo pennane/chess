@@ -12,7 +12,7 @@ import { useCurrentUserId } from '../../hooks/useCurrentUserId'
 import { WHITE } from '../../chess/chess.constants'
 import { useGame } from '../../hooks/useGameChanges'
 import { TChessSquare } from '../../chess/chess.models'
-import { ChessGameStatus, ChessPieceColor } from '../../types'
+import { ChessGameStatus, ChessPieceColor } from '../../graphql/types'
 
 const StyledGame = styled.div`
   display: flex;
