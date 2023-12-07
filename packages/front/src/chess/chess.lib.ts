@@ -110,3 +110,12 @@ export function parseRank(rank: string): number | null {
 export function squareToIndex(square: TChessSquare): TChessSquareIndex {
   return square.rank * 8 + square.file
 }
+
+export function squareToBackendMove(
+  from: TChessSquare,
+  to: TChessSquare
+): string {
+  return `${String.fromCharCode(from.file + 'a'.charCodeAt(0))}${
+    from.rank + 1
+  }${String.fromCharCode(to.file + 'a'.charCodeAt(0))}${to.rank + 1}`
+}

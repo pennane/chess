@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { useDrag } from 'react-dnd'
-import { EChessPiece } from '../../../../../../chess/chess.models'
+import { EChessPiece } from '../../../../../../../../chess/chess.models'
 import { chessPieceToImageSrc } from './ChessPiece.lib'
-import { CHESS_PIECE_ITEM_TYPE } from '../../../../../../chess/chess.constants'
+import { CHESS_PIECE_ITEM_TYPE } from '../../../../../../../../chess/chess.constants'
 
 const StyledChessPieceImage = styled.img`
   width: 100%;
@@ -31,7 +31,7 @@ export const ChessPiece: FC<TChessPieceProps> = ({ piece, file, rank }) => {
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
       type: CHESS_PIECE_ITEM_TYPE,
-      item: { piece, file, rank },
+      item: { file, rank },
       collect: (monitor) => ({
         isDragging: monitor.isDragging()
       })

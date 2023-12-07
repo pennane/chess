@@ -1,8 +1,13 @@
 import { FC } from 'react'
-import { TChessBoard, TChessPieceColor } from '../../chess/chess.models'
+import {
+  TChessBoard,
+  TChessPieceColor,
+  TChessSquare
+} from '../../../../chess/chess.models'
 import styled from 'styled-components'
 import { ChessBoardSquare } from './components/ChessBoardSquare/ChessBoardSquare'
 import { parseRanks } from './ChessBoard.lib'
+import { CHESS_BOARD_SIZE, WHITE } from '../../../../chess/chess.constants'
 
 const StyledChessBoard = styled.div`
   display: flex;
@@ -16,11 +21,15 @@ const StyledRank = styled.div`
 export type TChessBoardProps = {
   board: TChessBoard
   sidePlaying: TChessPieceColor
+  onPieceDrop: (item: { from: TChessSquare; to: TChessSquare }) => void
 }
 
-export const ChessBoard: FC<TChessBoardProps> = ({ board, sidePlaying }) => {
+export const ChessBoard: FC<TChessBoardProps> = ({
+  board,
+  sidePlaying,
+  onPieceDrop
+}) => {
   const ranks = parseRanks(board, sidePlaying)
-  const onPieceDrop = (...args: unknown[]) => console.log(...args)
 
   return (
     <StyledChessBoard>
@@ -30,8 +39,16 @@ export const ChessBoard: FC<TChessBoardProps> = ({ board, sidePlaying }) => {
             <ChessBoardSquare
               key={fileIndex}
               chessPiece={piece}
-              rank={rankIndex}
-              file={fileIndex}
+              rank={
+                sidePlaying === WHITE
+                  ? CHESS_BOARD_SIZE - rankIndex - 1
+                  : rankIndex
+              }
+              file={
+                sidePlaying === WHITE
+                  ? fileIndex
+                  : CHESS_BOARD_SIZE - fileIndex - 1
+              }
               onPieceDrop={onPieceDrop}
             />
           ))}
