@@ -11,8 +11,6 @@ import { indexToSquare, getPiece, squareToIndex } from '../../chess.lib'
 import { State, Move } from '../../chess.models'
 import { invertColor } from '../moves.lib'
 
-export const clone = <T>(v: T) => structuredClone(v)
-
 export const updateCastlingAbility =
 	(move: Move) =>
 	(state: State): State => {

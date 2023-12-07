@@ -32,7 +32,7 @@ VITE_WS_BASE_URL=ws://localhost:3000
 
 To start the backend, in the project directory run: `pnpm --filter backend dev`
 
-To start the frontend, in the project directory run: `pnpm --filter frontend dev`
+To start the frontend, in the project directory run: `pnpm --filter front dev`
 
 # Linting
 

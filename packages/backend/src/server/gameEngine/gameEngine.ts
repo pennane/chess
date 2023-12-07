@@ -5,12 +5,19 @@ import {
 	validateCanJoinGame,
 	validateGameExists,
 	validateGameIsInSpecificState,
+	validatePlayerOwnsMovedPiece,
 	validateUserInGame,
 } from './gameEngine.lib'
 import { getGameFromStore, getGameStore } from './store/store'
 import { EngineChessGame, EngineChessGameStatus } from './store/store.models'
-import { playMove as playChessMove } from '../../chess/moves/moves'
+import {
+	generateMoves,
+	playMove as playChessMove,
+} from '../../chess/moves/moves'
 import { fenToState, stateToFen } from '../../chess/serialization/fen/fen'
+import { parseMove } from '../../chess/serialization/pureCoordinateNotation/pureCoordinateNotation'
+import { isEmpty } from '../../utils/fp'
+import { isInCheck } from '../../chess/moves/moves.lib'
 
 export function getGame(gameId: string) {
 	return getGameFromStore(gameId)
@@ -118,8 +125,23 @@ export function playMove(
 	validateGameIsInSpecificState(EngineChessGameStatus.IN_PROGRESS, game)
 
 	const state = fenToState(game.fenString)
+	const parsedMove = parseMove(move)
+
+	validatePlayerOwnsMovedPiece(playerId, game, state, parsedMove)
+
 	const newState = playChessMove(move, state)
 	game.fenString = stateToFen(newState)
+
+	const possibleMoves = generateMoves(newState)
+
+	if (isEmpty(possibleMoves)) {
+		const inCheck = isInCheck(state)
+		if (inCheck) {
+			game.status = EngineChessGameStatus.CHECKMATE
+		} else {
+			game.status = EngineChessGameStatus.STALEMATE
+		}
+	}
 
 	return game
 }

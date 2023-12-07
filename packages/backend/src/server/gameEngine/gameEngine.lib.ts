@@ -1,3 +1,4 @@
+import { Move, State } from '../../chess/chess.models'
 import { INITIAL_CHESS_BOARD_FEN_STRING } from '../../chess/serialization/fen/fen.constants'
 import { createId } from '../../utils/uuid'
 import {
@@ -67,4 +68,24 @@ export function validateGameIsInSpecificState(
 	if (game.status !== status) {
 		throw new Error(`Game not in ${status}`)
 	}
+}
+
+export function validatePlayerOwnsMovedPiece(
+	playerId: string,
+	game: EngineChessGame,
+	state: State,
+	move: Move | null,
+) {
+	const player = game.players.find((p) => p.id === playerId)
+
+	if (!player || !move) {
+		throw new Error('Invalid move')
+	}
+
+	if (state.sideToMove === 'b' && player.color === EngineChessColor.BLACK)
+		return
+	if (state.sideToMove === 'w' && player.color === EngineChessColor.WHITE)
+		return
+
+	throw new Error('You do not own the moved piece')
 }

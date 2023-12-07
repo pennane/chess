@@ -5,17 +5,14 @@ import {
   TChessCastlingAbility,
   TChessPieceColor,
   TChessSquare,
-  TChessSquareIndex,
   TChessState
 } from './chess.models'
 
-export function fenToChessPiece(fenPiece: EChessPiece): EChessPiece {
+function fenToChessPiece(fenPiece: EChessPiece): EChessPiece {
   return fenPiece
 }
 
-export function fenToCastlingAbility(
-  fenCastling: string
-): TChessCastlingAbility {
+function fenToCastlingAbility(fenCastling: string): TChessCastlingAbility {
   return {
     WHITE: {
       kingSide: fenCastling.includes(EChessPiece.WhiteKing),
@@ -28,24 +25,22 @@ export function fenToCastlingAbility(
   }
 }
 
-export function fenToEnPassantTargetSquareIndex(
-  fen: string
-): TChessSquareIndex | null {
+function fenToEnPassantTargetSquare(fen: string): TChessSquare | null {
   if (fen === '-') return null
   const [file, rank, ...rest] = fen.split('')
   const parsedFile = parseFile(file)
   const parsedRank = parseRank(rank)
   if (rest.length > 1 || !parsedFile || !parsedRank) return null
-  return squareToIndex({ file: parsedFile, rank: parsedRank })
+  return { file: parsedFile, rank: parsedRank }
 }
 
-export function fenToSideToMove(fen: string): TChessPieceColor {
+function fenToSideToMove(fen: string): TChessPieceColor {
   if (fen === 'w') return WHITE
   if (fen === 'b') return BLACK
   throw new Error('Invalid color in fenToSideToMove')
 }
 
-export function fenToBoard(fen: string): TChessBoard {
+function fenToBoard(fen: string): TChessBoard {
   const ranks = fen.split('/')
 
   let board: TChessBoard = []
@@ -66,12 +61,25 @@ export function fenToBoard(fen: string): TChessBoard {
   return board
 }
 
-export function fenToFullmoveCounter(counter: string): number {
+function fenToFullmoveCounter(counter: string): number {
   return parseFloat(counter)
 }
 
-export function fenToHalfmoveClock(counter: string): number {
+function fenToHalfmoveClock(counter: string): number {
   return parseFloat(counter)
+}
+
+function parseFile(file: string): number | null {
+  const fileNumber = file.charCodeAt(0) - 'a'.charCodeAt(0)
+  if (fileNumber < 0 || fileNumber > 7) return null
+  return fileNumber
+}
+
+function parseRank(rank: string): number | null {
+  const parsedRank = parseInt(rank) - 1
+
+  if (parsedRank < 0 || parsedRank > 7) return null
+  return parsedRank
 }
 
 export function fenStringToState(fenString: string): TChessState {
@@ -88,7 +96,7 @@ export function fenStringToState(fenString: string): TChessState {
     board: fenToBoard(board),
     sideToMove: fenToSideToMove(sideToMove),
     castlingAbility: fenToCastlingAbility(castlingAbility),
-    enPassantTargetSquareIndex: fenToEnPassantTargetSquareIndex(
+    enPassantTargetSquare: fenToEnPassantTargetSquare(
       enPassantTargetSquareIndex
     ),
     halfmoveClock: fenToHalfmoveClock(halfmoveClock),
@@ -96,19 +104,11 @@ export function fenStringToState(fenString: string): TChessState {
   }
 }
 
-export function parseFile(file: string): number | null {
-  const fileNumber = file.charCodeAt(0) - 'a'.charCodeAt(0)
-  if (fileNumber < 0 || fileNumber > 7) return null
-  return fileNumber
-}
-
-export function parseRank(rank: string): number | null {
-  const parsedRank = parseInt(rank) - 1
-
-  if (parsedRank < 0 || parsedRank > 7) return null
-  return parsedRank
-}
-
-export function squareToIndex(square: TChessSquare): TChessSquareIndex {
-  return square.rank * 8 + square.file
+export function squareToBackendMove(
+  from: TChessSquare,
+  to: TChessSquare
+): string {
+  return `${String.fromCharCode(from.file + 'a'.charCodeAt(0))}${
+    from.rank + 1
+  }${String.fromCharCode(to.file + 'a'.charCodeAt(0))}${to.rank + 1}`
 }
