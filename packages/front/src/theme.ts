@@ -1,7 +1,18 @@
 export const THEME = {
-  colors: {
+  background: {
+    default: '#fff',
     lightSquare: 'green',
     darkSquare: 'darkGreen',
-    hover: '#8da821'
+    squareHover: '#8da821'
+  },
+  foreground: {
+    good: '#1bb309',
+    info: '#095eb3'
+  },
+
+  text: {
+    default: '#0b2b08',
+    good: '#185711',
+    info: '#0d72d6'
   }
 }

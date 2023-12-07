@@ -20,12 +20,14 @@ const StyledBoardSquare = styled.div<{
   $isOver: boolean
 }>`
   display: block;
-  width: clamp(3rem, 11vw, 8vmin);
-  height: clamp(3rem, 11vw, 8vmin);
+  width: clamp(2.75rem, 11vw, 8vmin);
+  height: clamp(2.75rem, 11vw, 8vmin);
   background-color: ${({ $color, $isOver }) => {
-    if ($isOver) return THEME.colors.hover
+    if ($isOver) return THEME.background.squareHover
 
-    return $color === DARK ? THEME.colors.darkSquare : THEME.colors.lightSquare
+    return $color === DARK
+      ? THEME.background.darkSquare
+      : THEME.background.lightSquare
   }};
 `
 

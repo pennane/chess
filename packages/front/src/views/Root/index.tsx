@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
+import { THEME } from '../../theme'
 
 const StyledRoot = styled.div`
   display: flex;
@@ -7,8 +8,24 @@ const StyledRoot = styled.div`
   gap: 1rem;
 `
 
+const StyledNavbar = styled.nav`
+  display: flex;
+  gap: 1rem;
+  margin: 1rem;
+`
+
+const StyledNavlink = styled(NavLink)`
+  color: ${THEME.text.info};
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
 const StyledContentWrapper = styled.div`
-  margin: 0 2rem;
+  margin: 0 0.5rem;
   margin-bottom: 10rem;
   display: flex;
   flex-direction: column;
@@ -24,6 +41,9 @@ const StyledContent = styled.div`
 export const Root = () => {
   return (
     <StyledRoot>
+      <StyledNavbar>
+        <StyledNavlink to="/">Chess</StyledNavlink>
+      </StyledNavbar>
       <StyledContentWrapper>
         <StyledContent>
           <Outlet />
