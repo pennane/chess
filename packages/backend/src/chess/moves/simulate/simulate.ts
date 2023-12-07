@@ -7,8 +7,8 @@ import {
 	handleMove,
 	handlePromotion,
 	invertStateSideToMove,
-	clone,
 } from './simutate.lib'
+import { clone } from '../../../utils/fp'
 
 export const simulateMove = (state: State, move: Move) =>
 	pipe(

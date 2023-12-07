@@ -16,14 +16,14 @@ import {
 	parseRank,
 } from '../pureCoordinateNotation/pureCoordinateNotation.lib'
 
-export function fenToChessPiece(fenPiece: FenPiece): ChessPiece {
+function fenToChessPiece(fenPiece: FenPiece): ChessPiece {
 	return {
 		color: fenPiece === fenPiece.toLowerCase() ? BLACK : WHITE,
 		type: fenPiece.toLowerCase() as Piece,
 	}
 }
 
-export function chessPieceToFen(chessPiece: ChessPiece): FenPiece {
+function chessPieceToFen(chessPiece: ChessPiece): FenPiece {
 	const fenChar = chessPiece.type
 	return (
 		chessPiece.color === WHITE ? fenChar.toUpperCase() : fenChar

@@ -17,7 +17,7 @@ const StyledChessPieceImage = styled.img`
   cursor: pointer;
 `
 
-export type TChessPieceProps = {
+type TChessPieceProps = {
   piece: EChessPiece
   file: number
   rank: number

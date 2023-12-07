@@ -18,7 +18,7 @@ const StyledRank = styled.div`
   display: flex;
 `
 
-export type TChessBoardProps = {
+type TChessBoardProps = {
   board: TChessBoard
   sidePlaying: TChessPieceColor
   onPieceDrop: (item: { from: TChessSquare; to: TChessSquare }) => void

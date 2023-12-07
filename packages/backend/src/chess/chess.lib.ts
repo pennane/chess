@@ -31,7 +31,3 @@ export function indexToSquare(index: number): Square {
 export function squareToIndex(square: Square): SquareIndex {
 	return square.rank * CHESS_BOARD_SIZE + square.file
 }
-
-export function createInitialChessState(): State {
-	return fenToState(INITIAL_CHESS_BOARD_FEN_STRING)
-}

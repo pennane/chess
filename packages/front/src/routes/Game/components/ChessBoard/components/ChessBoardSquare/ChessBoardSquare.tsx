@@ -29,7 +29,7 @@ const StyledBoardSquare = styled.div<{
   }};
 `
 
-export type TChessBoardSquareProps = {
+type TChessBoardSquareProps = {
   chessPiece: EChessPiece | null
   rank: number
   file: number

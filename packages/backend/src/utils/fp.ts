@@ -13,3 +13,7 @@ export function isEmpty<T>(v: T[]): boolean {
 export function isNotEmpty<T>(v: T[]): boolean {
 	return !isEmpty(v)
 }
+
+export function clone<T>(v: T) {
+	return structuredClone(v)
+}
