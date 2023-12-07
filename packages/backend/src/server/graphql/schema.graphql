@@ -45,6 +45,7 @@ Queries available in the chess game API
 """
 type Query {
 	gameById(gameId: ID!): ChessGame
+	currentUserId: ID!
 }
 
 """
