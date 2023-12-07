@@ -25,4 +25,6 @@ export type EngineChessGame = {
 	players: EngineChessPlayer[]
 	status: EngineChessGameStatus
 	moveHistory: string[]
+	createdAt: Date
+	updatedAt: Date
 }

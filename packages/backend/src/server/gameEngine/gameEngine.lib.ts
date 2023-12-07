@@ -1,6 +1,7 @@
 import { Move, State } from '../../chess/chess.models'
 import { INITIAL_CHESS_BOARD_FEN_STRING } from '../../chess/serialization/fen/fen.constants'
 import { createId } from '../../utils/uuid'
+import { storeHasSpaceForNewGame } from './store/store'
 import {
 	EngineChessColor,
 	EngineChessGame,
@@ -24,6 +25,8 @@ export function createInitialGame(playerId: string): EngineChessGame {
 		moveHistory: [],
 		players: [createPlayer(playerId)],
 		status: EngineChessGameStatus.NOT_STARTED,
+		updatedAt: new Date(),
+		createdAt: new Date(),
 	}
 }
 
@@ -101,4 +104,10 @@ export function validatePlayerOwnsMovedPiece(
 		return
 
 	throw new Error('You do not own the moved piece')
+}
+
+export function validateCanCreateNewGame() {
+	if (!storeHasSpaceForNewGame()) {
+		throw new Error('Game store is overloaded, try again later')
+	}
 }
