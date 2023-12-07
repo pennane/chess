@@ -10,6 +10,7 @@ import { getGraphqlResolvers } from './resolvers/root'
 import { GraphqlPubSubKey, GraphqlRequestContext } from './graphql.models'
 import { PubSub } from 'graphql-subscriptions'
 import { EngineChessGame } from '../gameEngine/store/store.models'
+import { refreshGameUpdatedAt } from '../gameEngine/store/store'
 
 export function createApolloServer({
 	httpServer,
@@ -53,4 +54,5 @@ export function publishGameStateChange(id: string, state: EngineChessGame) {
 	pubsub.publish(`${GraphqlPubSubKey.CHESSS_STATE_CHANGE}:${id}`, {
 		chessGameStateChanged: state,
 	})
+	refreshGameUpdatedAt(id)
 }
