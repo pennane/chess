@@ -5,14 +5,11 @@ import {
   useToggleReadyMutation,
   useJoinGameMutation
 } from '../../graphql/Queries.generated'
-import { useCurrentUserId } from '../useCurrentUserId'
+
 import { useGameData } from '../useGameData'
 
 export const useGameMutations = (id: string) => {
-  const currentUserId = useCurrentUserId()
-  const { game } = useGameData(id)
-
-  const currentPlayer = game?.players.find((p) => p.id === currentUserId)
+  const { currentUserPlayer } = useGameData(id)
 
   const [playMove] = usePlayMoveMutation()
   const [toggleReady] = useToggleReadyMutation()
@@ -29,7 +26,7 @@ export const useGameMutations = (id: string) => {
   }
 
   const handleToggleReady = () => {
-    toggleReady({ variables: { id: id!, ready: !currentPlayer?.ready } })
+    toggleReady({ variables: { id: id!, ready: !currentUserPlayer?.ready } })
   }
 
   const handleJoinGame = () => {
