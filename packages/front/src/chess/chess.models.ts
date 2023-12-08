@@ -36,4 +36,6 @@ export type TChessSquare = {
   rank: number
 }
 
+export type TChessSquareWithType = TChessSquare & { piece: EChessPiece }
+
 export type TChessSquareColor = 'LIGHT' | 'DARK'

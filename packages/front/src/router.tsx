@@ -1,17 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { Root } from './views/Root'
-import { Error } from './views/Error/Error'
-import { Home } from './views/Home'
-import { Game } from './views/Game'
+import { ErrorView } from './views/ErrorView'
+import { GameView } from './views/GameView'
+import { HomeView } from './views/HomeView'
+import { RootView } from './views/RootView'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
-    errorElement: <Error />,
+    element: <RootView />,
+    errorElement: <ErrorView />,
     children: [
-      { path: '', element: <Home /> },
-      { path: ':id', element: <Game /> }
+      { path: '', element: <HomeView /> },
+      { path: ':id', element: <GameView /> }
     ]
   }
 ])

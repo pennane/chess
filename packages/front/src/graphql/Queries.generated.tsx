@@ -3,6 +3,10 @@ import * as Types from './types';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
+export type PlayerFragment = { __typename?: 'ChessPlayer', id: string, color?: Types.ChessPieceColor | null, ready: boolean, desiresDraw: boolean };
+
+export type GameFragment = { __typename?: 'ChessGame', id: string, fenString: string, status: Types.ChessGameStatus, moveHistory: Array<string>, players: Array<{ __typename?: 'ChessPlayer', id: string, color?: Types.ChessPieceColor | null, ready: boolean, desiresDraw: boolean }> };
+
 export type GetGameQueryVariables = Types.Exact<{
   id: Types.Scalars['ID']['input'];
 }>;
@@ -72,23 +76,32 @@ export type CurrentUserIdQueryVariables = Types.Exact<{ [key: string]: never; }>
 
 export type CurrentUserIdQuery = { __typename?: 'Query', currentUserId: string };
 
-
+export const PlayerFragmentDoc = gql`
+    fragment Player on ChessPlayer {
+  id
+  color
+  ready
+  desiresDraw
+}
+    `;
+export const GameFragmentDoc = gql`
+    fragment Game on ChessGame {
+  id
+  fenString
+  players {
+    ...Player
+  }
+  status
+  moveHistory
+}
+    ${PlayerFragmentDoc}`;
 export const GetGameDocument = gql`
     query GetGame($id: ID!) {
   gameById(gameId: $id) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 
 /**
  * __useGetGameQuery__
@@ -120,19 +133,10 @@ export type GetGameQueryResult = Apollo.QueryResult<GetGameQuery, GetGameQueryVa
 export const CreateGameDocument = gql`
     mutation CreateGame {
   createGame {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type CreateGameMutationFn = Apollo.MutationFunction<CreateGameMutation, CreateGameMutationVariables>;
 
 /**
@@ -161,19 +165,10 @@ export type CreateGameMutationOptions = Apollo.BaseMutationOptions<CreateGameMut
 export const JoinGameDocument = gql`
     mutation JoinGame($id: ID!) {
   joinGame(gameId: $id) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type JoinGameMutationFn = Apollo.MutationFunction<JoinGameMutation, JoinGameMutationVariables>;
 
 /**
@@ -203,19 +198,10 @@ export type JoinGameMutationOptions = Apollo.BaseMutationOptions<JoinGameMutatio
 export const ToggleReadyDocument = gql`
     mutation ToggleReady($id: ID!, $ready: Boolean!) {
   toggleReady(gameId: $id, ready: $ready) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type ToggleReadyMutationFn = Apollo.MutationFunction<ToggleReadyMutation, ToggleReadyMutationVariables>;
 
 /**
@@ -246,19 +232,10 @@ export type ToggleReadyMutationOptions = Apollo.BaseMutationOptions<ToggleReadyM
 export const ToggleDrawDesireDocument = gql`
     mutation ToggleDrawDesire($id: ID!, $ready: Boolean!) {
   toggleDrawDesire(gameId: $id, desireDraw: $ready) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type ToggleDrawDesireMutationFn = Apollo.MutationFunction<ToggleDrawDesireMutation, ToggleDrawDesireMutationVariables>;
 
 /**
@@ -289,19 +266,10 @@ export type ToggleDrawDesireMutationOptions = Apollo.BaseMutationOptions<ToggleD
 export const PlayMoveDocument = gql`
     mutation PlayMove($id: ID!, $move: String!) {
   playMove(gameId: $id, move: $move) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type PlayMoveMutationFn = Apollo.MutationFunction<PlayMoveMutation, PlayMoveMutationVariables>;
 
 /**
@@ -332,19 +300,10 @@ export type PlayMoveMutationOptions = Apollo.BaseMutationOptions<PlayMoveMutatio
 export const LeaveGameDocument = gql`
     mutation LeaveGame($id: ID!) {
   leaveGame(gameId: $id) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type LeaveGameMutationFn = Apollo.MutationFunction<LeaveGameMutation, LeaveGameMutationVariables>;
 
 /**
@@ -374,19 +333,10 @@ export type LeaveGameMutationOptions = Apollo.BaseMutationOptions<LeaveGameMutat
 export const ResignDocument = gql`
     mutation Resign($id: ID!) {
   resign(gameId: $id) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 export type ResignMutationFn = Apollo.MutationFunction<ResignMutation, ResignMutationVariables>;
 
 /**
@@ -416,19 +366,10 @@ export type ResignMutationOptions = Apollo.BaseMutationOptions<ResignMutation, R
 export const ChessGameStateChangedDocument = gql`
     subscription ChessGameStateChanged($id: ID!) {
   chessGameStateChanged(gameId: $id) {
-    id
-    fenString
-    players {
-      id
-      color
-      ready
-      desiresDraw
-    }
-    status
-    moveHistory
+    ...Game
   }
 }
-    `;
+    ${GameFragmentDoc}`;
 
 /**
  * __useChessGameStateChangedSubscription__

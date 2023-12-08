@@ -38,7 +38,7 @@ const StyledContent = styled.div`
   width: 100%;
 `
 
-export const Root = () => {
+export const RootView = () => {
   return (
     <StyledRoot>
       <StyledNavbar>

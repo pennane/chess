@@ -1,138 +1,74 @@
+fragment Player on ChessPlayer {
+  id
+  color
+  ready
+  desiresDraw
+}
+
+fragment Game on ChessGame {
+  id
+  fenString
+  players {
+    ...Player
+  }
+  status
+  moveHistory
+}
+
 query GetGame($id: ID!) {
-	gameById(gameId: $id) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  gameById(gameId: $id) {
+    ...Game
+  }
 }
 
 mutation CreateGame {
-	createGame {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  createGame {
+    ...Game
+  }
 }
 
 mutation JoinGame($id: ID!) {
-	joinGame(gameId: $id) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  joinGame(gameId: $id) {
+    ...Game
+  }
 }
 
 mutation ToggleReady($id: ID!, $ready: Boolean!) {
-	toggleReady(gameId: $id, ready: $ready) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  toggleReady(gameId: $id, ready: $ready) {
+    ...Game
+  }
 }
 
 mutation ToggleDrawDesire($id: ID!, $ready: Boolean!) {
-	toggleDrawDesire(gameId: $id, desireDraw: $ready) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  toggleDrawDesire(gameId: $id, desireDraw: $ready) {
+    ...Game
+  }
 }
 
 mutation PlayMove($id: ID!, $move: String!) {
-	playMove(gameId: $id, move: $move) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  playMove(gameId: $id, move: $move) {
+    ...Game
+  }
 }
 
 mutation LeaveGame($id: ID!) {
-	leaveGame(gameId: $id) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  leaveGame(gameId: $id) {
+    ...Game
+  }
 }
 
 mutation Resign($id: ID!) {
-	resign(gameId: $id) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  resign(gameId: $id) {
+    ...Game
+  }
 }
 
 subscription ChessGameStateChanged($id: ID!) {
-	chessGameStateChanged(gameId: $id) {
-		id
-		fenString
-		players {
-			id
-			color
-			ready
-			desiresDraw
-		}
-		status
-		moveHistory
-	}
+  chessGameStateChanged(gameId: $id) {
+    ...Game
+  }
 }
 
 query CurrentUserId {
-	currentUserId
+  currentUserId
 }

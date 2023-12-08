@@ -5,15 +5,13 @@ import { useDrop } from 'react-dnd'
 import {
   EChessPiece,
   TChessSquare,
-  TChessSquareColor
-} from '../../../../../../chess/chess.models'
-import { THEME } from '../../../../../../theme'
-import { ChessPiece } from './components/ChessPiece/ChessPiece'
-import {
-  CHESS_PIECE_ITEM_TYPE,
-  DARK
-} from '../../../../../../chess/chess.constants'
-import { coordinateToSquareColor } from '../../ChessBoard.lib'
+  TChessSquareColor,
+  TChessSquareWithType
+} from '../../../../chess/chess.models'
+import { THEME } from '../../../../theme'
+import { ChessPiece } from './components/ChessPiece'
+import { CHESS_PIECE_ITEM_TYPE, DARK } from '../../../../chess/chess.constants'
+import { coordinateToSquareColor } from '../../lib'
 
 const StyledBoardSquare = styled.div<{
   $color: TChessSquareColor
@@ -35,7 +33,7 @@ type TChessBoardSquareProps = {
   chessPiece: EChessPiece | null
   rank: number
   file: number
-  onPieceDrop: (item: { from: TChessSquare; to: TChessSquare }) => void
+  onPieceDrop: (item: { from: TChessSquareWithType; to: TChessSquare }) => void
 }
 
 export const ChessBoardSquare: FC<TChessBoardSquareProps> = ({
@@ -47,7 +45,7 @@ export const ChessBoardSquare: FC<TChessBoardSquareProps> = ({
   const [{ isOver }, dropRef] = useDrop(
     () => ({
       accept: CHESS_PIECE_ITEM_TYPE,
-      drop: (item: TChessSquare) => {
+      drop: (item: TChessSquareWithType) => {
         return onPieceDrop({ from: item, to: { rank, file } })
       },
       collect: (monitor) => ({

@@ -21,7 +21,7 @@ const StyledErrorPage = styled.div`
   margin-top: 8vw;
 `
 
-export const Error = () => {
+export const ErrorView = () => {
   const error = useRouteError()
 
   const errorMessage = isRouteError(error)

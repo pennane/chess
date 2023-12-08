@@ -110,5 +110,7 @@ export function squareToBackendMove(
 ): string {
   return `${String.fromCharCode(from.file + 'a'.charCodeAt(0))}${
     from.rank + 1
-  }${String.fromCharCode(to.file + 'a'.charCodeAt(0))}${to.rank + 1}`
+  }${String.fromCharCode(to.file + 'a'.charCodeAt(0))}${to.rank + 1}`.concat(
+    'q'
+  )
 }

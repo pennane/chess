@@ -4,12 +4,12 @@ import {
   CHESS_BOARD_SIZE,
   DARK,
   LIGHT
-} from '../../../../chess/chess.constants'
+} from '../../chess/chess.constants'
 import {
   TChessBoard,
   TChessPieceColor,
   TChessSquareColor
-} from '../../../../chess/chess.models'
+} from '../../chess/chess.models'
 
 export function coordinateToSquareColor(
   x: number,

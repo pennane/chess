@@ -15,7 +15,7 @@ const StyledInfoSection = styled.div`
   gap: 0.5rem;
 `
 
-export const Home = () => {
+export const HomeView = () => {
   const navigate = useNavigate()
 
   const [createGame] = useCreateGameMutation()
