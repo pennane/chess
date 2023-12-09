@@ -5,6 +5,7 @@ import {
   TChessCastlingAbility,
   TChessPieceColor,
   TChessSquare,
+  TChessSquareWithType,
   TChessState
 } from './chess.models'
 
@@ -104,13 +105,23 @@ export function fenStringToState(fenString: string): TChessState {
   }
 }
 
-export function squareToBackendMove(
-  from: TChessSquare,
+export function parseBackendMove(
+  from: TChessSquareWithType,
   to: TChessSquare
 ): string {
-  return `${String.fromCharCode(from.file + 'a'.charCodeAt(0))}${
+  const move = `${String.fromCharCode(from.file + 'a'.charCodeAt(0))}${
     from.rank + 1
-  }${String.fromCharCode(to.file + 'a'.charCodeAt(0))}${to.rank + 1}`.concat(
-    'q'
-  )
+  }${String.fromCharCode(to.file + 'a'.charCodeAt(0))}${to.rank + 1}`
+
+  const isPawn =
+    from.piece === EChessPiece.BlackPawn || from.piece === EChessPiece.WhitePawn
+  const isPromotionEndRank = to.rank === 0 || to.rank === CHESS_BOARD_SIZE - 1
+  const shouldPromote = isPawn && isPromotionEndRank
+
+  if (!shouldPromote) {
+    return move
+  }
+
+  // Always promote to queen when possible
+  return move.concat('q')
 }

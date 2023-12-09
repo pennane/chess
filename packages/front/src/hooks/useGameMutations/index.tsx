@@ -1,4 +1,4 @@
-import { squareToBackendMove } from '../../chess/chess.lib'
+import { parseBackendMove } from '../../chess/chess.lib'
 import { TChessSquare, TChessSquareWithType } from '../../chess/chess.models'
 import {
   usePlayMoveMutation,
@@ -22,7 +22,7 @@ export const useGameMutations = (id: string) => {
     from: TChessSquareWithType
     to: TChessSquare
   }) => {
-    playMove({ variables: { id: id!, move: squareToBackendMove(from, to) } })
+    playMove({ variables: { id: id!, move: parseBackendMove(from, to) } })
   }
 
   const handleToggleReady = () => {
