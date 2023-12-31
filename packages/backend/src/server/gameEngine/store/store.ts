@@ -38,10 +38,10 @@ function pruneOldGames() {
 		if (GAME_STATES_TO_ALWAYS_PRUNE.includes(game.status)) {
 			return store.delete(id)
 		}
-		if (game.createdAt.getTime() - now > MAX_DURATION_FROM_CREATED_AT_MS) {
+		if (now - game.createdAt.getTime() > MAX_DURATION_FROM_CREATED_AT_MS) {
 			return store.delete(id)
 		}
-		if (game.updatedAt.getTime() - now > MAX_DURATION_FROM_LAST_UPDATE_MS) {
+		if (now - game.updatedAt.getTime() > MAX_DURATION_FROM_LAST_UPDATE_MS) {
 			return store.delete(id)
 		}
 	}
