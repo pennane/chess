@@ -44,7 +44,7 @@ The project can be linted with `pnpm lint` or `npm run lint`
 
 - [x] chess
 - [x] websocket server for online multiplayer
-- [ ] web GUI (work in progress)
+- [x] web GUI (work in progress)
 
 ## Terminology
 
