@@ -2,7 +2,7 @@
 
 This project is for the "DX and Clean Code: Enhancing Developer Experience through Quality Code TX00FK85-3001" course.
 
-It's a simple chess game that currently works in the Command Line Interface (CLI). The computer opponent picks a random legal move on its turn. The idea is to make the game online and add a simple web based GUI.
+Online multiplayer chess with ephemeral games.
 
 ## Getting Started
 
@@ -44,7 +44,7 @@ The project can be linted with `pnpm lint` or `npm run lint`
 
 - [x] chess
 - [x] websocket server for online multiplayer
-- [x] web GUI (work in progress)
+- [x] web GUI 
 
 ## Terminology
 
