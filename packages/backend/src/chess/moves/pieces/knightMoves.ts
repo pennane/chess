@@ -1,6 +1,12 @@
-import { KNIGHT_MOVES } from '../../chess.constants'
-import { indexToSquare, isOutOfBounds, squareToIndex } from '../../chess.lib'
-import { SquareIndex, State, Move } from '../../chess.models'
+import {
+	indexToSquare,
+	isOutOfBounds,
+	squareToIndex,
+	SquareIndex,
+	State,
+	Move,
+} from 'chess-core'
+import { KNIGHT_MOVES } from 'chess-core/internal'
 
 export function generateKnightMoves(from: SquareIndex, state: State): Move[] {
 	const moves: Move[] = []
@@ -18,6 +24,7 @@ export function generateKnightMoves(from: SquareIndex, state: State): Move[] {
 		if (destinationPiece?.color === state.sideToMove) continue
 
 		moves.push({
+			kind: 'normal',
 			from: from,
 			to: destinationIndex,
 		})

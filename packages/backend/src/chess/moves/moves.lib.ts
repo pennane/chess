@@ -1,13 +1,15 @@
-import { BLACK, KING, WHITE } from '../chess.constants'
-import { getPiece } from '../chess.lib'
 import {
+	BLACK,
+	KING,
+	WHITE,
+	getPiece,
 	Board,
 	ChessPiece,
 	Color,
 	Move,
 	SquareIndex,
 	State,
-} from '../chess.models'
+} from 'chess-core'
 import {
 	generateLegalMovesForSquareIndex,
 	generateMovesForSquareIndex,
@@ -55,12 +57,12 @@ export function isInCheck(state: State) {
 
 export function validateMove(state: State, move: Move) {
 	const generatedMoves = generateLegalMovesForSquareIndex(state, move.from)
-	const validatedMove = generatedMoves.find(
-		(m) =>
-			move.from === m.from &&
-			move.to === m.to &&
-			move.promotion === m.promotion,
-	)
+	const movePromotion = move.kind === 'promotion' ? move.promotion : undefined
+	const validatedMove = generatedMoves.find((m) => {
+		if (move.from !== m.from || move.to !== m.to) return false
+		const mPromotion = m.kind === 'promotion' ? m.promotion : undefined
+		return movePromotion === mPromotion
+	})
 	return validatedMove
 }
 

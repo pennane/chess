@@ -1,5 +1,4 @@
-import { Move, State } from '../../chess/chess.models'
-import { INITIAL_CHESS_BOARD_FEN_STRING } from '../../chess/serialization/fen/fen.constants'
+import { Move, State, INITIAL_CHESS_BOARD_FEN_STRING } from 'chess-core'
 import { createId } from '../../utils/uuid'
 import { storeHasSpaceForNewGame } from './store/store'
 import {

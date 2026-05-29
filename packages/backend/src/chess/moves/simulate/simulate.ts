@@ -1,5 +1,5 @@
 import { pipe } from 'ramda'
-import { Move, State } from '../../chess.models'
+import { Move, State } from 'chess-core'
 import {
 	updateCastlingAbility,
 	incrementFullMoveCounter,

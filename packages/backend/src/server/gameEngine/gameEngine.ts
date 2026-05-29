@@ -14,8 +14,7 @@ import {
 	generateMoves,
 	playMove as playChessMove,
 } from '../../chess/moves/moves'
-import { fenToState, stateToFen } from '../../chess/serialization/fen/fen'
-import { parseMove } from '../../chess/serialization/pureCoordinateNotation/pureCoordinateNotation'
+import { fenToState, stateToFen, parseMove } from 'chess-core'
 import { isEmpty } from '../../utils/fp'
 import { isInCheck } from '../../chess/moves/moves.lib'
 
