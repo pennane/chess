@@ -3,7 +3,7 @@ import {
   useChessGameStateChangedSubscription,
   useGetGameQuery
 } from '../../graphql/Queries.generated'
-import { fenStringToState } from '../../chess/chess.lib'
+import { fenToState } from 'chess-core'
 import { useCurrentUserId } from '../useCurrentUserId'
 
 export const useGameData = (id: string | null | undefined) => {
@@ -23,7 +23,7 @@ export const useGameData = (id: string | null | undefined) => {
 
   const state = useMemo(() => {
     if (!game?.fenString) return null
-    return fenStringToState(game.fenString)
+    return fenToState(game.fenString)
   }, [game?.fenString])
 
   const currentUserPlayer = game?.players.find((p) => p.id === currentUserId)

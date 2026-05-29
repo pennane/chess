@@ -107,6 +107,9 @@ importers:
       '@apollo/client':
         specifier: ^3.8.7
         version: 3.8.7(graphql-ws@5.14.2(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      chess-core:
+        specifier: workspace:*
+        version: link:../chess-core
       graphql:
         specifier: ^16.8.1
         version: 16.8.1

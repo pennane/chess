@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "pnpm --filter chess-core build && vite",
+    "build": "pnpm --filter chess-core build && tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "chess-core": "workspace:*",
     "@apollo/client": "^3.8.7",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.2",
