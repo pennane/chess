@@ -6,10 +6,10 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node dist/index.js",
-        "build": "tsc && cp ./src/server/graphql/schema.graphql ./dist/server/graphql/schema.graphql",
+        "build": "pnpm --filter chess-core build && tsc && cp ./src/server/graphql/schema.graphql ./dist/server/graphql/schema.graphql",
         "lint": "eslint . --ext .ts --fix",
-        "typecheck": "tsc --noEmit",
-        "dev": "nodemon src/index.ts"
+        "typecheck": "pnpm --filter chess-core build && tsc --noEmit",
+        "dev": "pnpm --filter chess-core build && nodemon src/index.ts"
     },
     "keywords": [],
     "author": "Arttu Pennanen <arttuinthewoods@gmail.com>",
@@ -30,6 +30,7 @@
         "typescript": "^5.2.2"
     },
     "dependencies": {
+        "chess-core": "workspace:*",
         "@apollo/server": "^4.9.5",
         "@graphql-tools/schema": "^10.0.0",
         "body-parser": "^1.20.2",

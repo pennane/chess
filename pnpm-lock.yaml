@@ -19,6 +19,9 @@ importers:
       body-parser:
         specifier: ^1.20.2
         version: 1.20.2
+      chess-core:
+        specifier: workspace:*
+        version: link:../chess-core
       cors:
         specifier: ^2.8.5
         version: 2.8.5
