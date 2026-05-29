@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { TChessState } from '../../../../chess/chess.models'
+import { State } from 'chess-core'
 import { GameFragment } from '../../../../graphql/Queries.generated'
 import { ChessGameStatus, ChessPieceColor } from '../../../../graphql/types'
 import { useCurrentUserId } from '../../../../hooks/useCurrentUserId'
+import { coreColorToGqlColor } from '../../../../chess/gqlColor'
 
 const StyledPlayers = styled.div`
   display: flex;
@@ -17,18 +18,19 @@ const StyledPlayer = styled.div`
   flex-basis: 50%;
 `
 
-type TPlayersProps = {
-  state: TChessState
+type PlayersProps = {
+  state: State
   game: GameFragment
 }
 
-export const Players: FC<TPlayersProps> = ({ state, game }) => {
+export const Players: FC<PlayersProps> = ({ state, game }) => {
   const currentPlayerId = useCurrentUserId()
+  const sideToMoveGql = coreColorToGqlColor(state.sideToMove)
   return (
     <StyledPlayers>
       {game?.players.map((player, i) => (
         <StyledPlayer key={i}>
-          {player.color === state.sideToMove && <span>&gt;</span>}
+          {player.color === sideToMoveGql && <span>&gt;</span>}
           <span>Player {i + 1}</span>
           {game?.status === ChessGameStatus.NotStarted && (
             <span>{player.ready ? 'ready' : 'not ready'}</span>

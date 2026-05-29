@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { WHITE } from 'chess-core'
 import { ChessBoard } from '../../components/ChessBoard'
-import { WHITE } from '../../chess/chess.constants'
 import { useGameData } from '../../hooks/useGameData'
 import { Players } from './components/Players'
 import { InfoBox } from './components/InfoBox'
 import { SideBar } from './components/SideBar'
 import { useGameMutations } from '../../hooks/useGameMutations'
+import { gqlColorToCoreColor } from '../../chess/gqlColor'
 
 const StyledGame = styled.div`
   display: flex;
@@ -33,7 +34,9 @@ export const GameView = () => {
   if (!game) return <p>no game found</p>
   if (!state) return <p>invalid game state</p>
 
-  const sidePlaying = currentUserPlayer?.color || WHITE
+  const sidePlaying = currentUserPlayer?.color
+    ? gqlColorToCoreColor(currentUserPlayer.color)
+    : WHITE
 
   return (
     <StyledGame>
