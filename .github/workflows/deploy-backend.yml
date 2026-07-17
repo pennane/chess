@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [packages/backend/**]
+    paths: [packages/backend/**, packages/chess-core/**]
 
 jobs:
   deploy:
@@ -22,12 +22,14 @@ jobs:
       - name: Install and build
         run: |
           pnpm install --frozen-lockfile
+          pnpm --filter chess-core build
           pnpm --filter backend build
 
       - name: Create deploy bundle
         run: |
           pnpm deploy --filter backend --prod --legacy /tmp/chess-backend
           cp -r packages/backend/dist /tmp/chess-backend/dist
+          cp -r packages/chess-core/dist /tmp/chess-backend/node_modules/chess-core/dist
           tar -czf /tmp/chess-backend.tar.gz -C /tmp chess-backend
 
       - name: Deploy
