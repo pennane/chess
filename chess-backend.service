@@ -1,0 +1,14 @@
+[Unit]
+Description=Chess Backend
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/chess-backend
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+RestartSec=5
+EnvironmentFile=/opt/chess-backend/.env
+
+[Install]
+WantedBy=multi-user.target
