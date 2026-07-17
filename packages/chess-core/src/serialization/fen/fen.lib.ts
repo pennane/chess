@@ -8,9 +8,15 @@ import {
 	SquareIndex,
 	Board,
 } from '../../chess.models'
-import { splitIntoChunks } from '../../../utils/array'
-import { isNil } from '../../../utils/fp'
-import { FenPiece } from './fen.models'
+import { isNil, splitIntoChunks } from '../../internal/utils'
+import {
+	FEN_BLACK_KING,
+	FEN_BLACK_QUEEN,
+	FEN_PIECES,
+	FEN_WHITE_KING,
+	FEN_WHITE_QUEEN,
+	FenPiece,
+} from './fen.models'
 import {
 	parseFile,
 	parseRank,
@@ -33,22 +39,22 @@ function chessPieceToFen(chessPiece: ChessPiece): FenPiece {
 export function fenToCastlingAbility(fenCastling: string): CastlingAbility {
 	return {
 		[WHITE]: {
-			kingSide: fenCastling.includes(FenPiece.WhiteKing),
-			queenSide: fenCastling.includes(FenPiece.WhiteQueen),
+			kingSide: fenCastling.includes(FEN_WHITE_KING),
+			queenSide: fenCastling.includes(FEN_WHITE_QUEEN),
 		},
 		[BLACK]: {
-			kingSide: fenCastling.includes(FenPiece.BlackKing),
-			queenSide: fenCastling.includes(FenPiece.BlackQueen),
+			kingSide: fenCastling.includes(FEN_BLACK_KING),
+			queenSide: fenCastling.includes(FEN_BLACK_QUEEN),
 		},
 	}
 }
 
 export function castlingAbilityToFen(castlingAbility: CastlingAbility): string {
 	const fenCastling = []
-	if (castlingAbility[WHITE].kingSide) fenCastling.push(FenPiece.WhiteKing)
-	if (castlingAbility[WHITE].queenSide) fenCastling.push(FenPiece.WhiteQueen)
-	if (castlingAbility[BLACK].kingSide) fenCastling.push(FenPiece.BlackKing)
-	if (castlingAbility[BLACK].queenSide) fenCastling.push(FenPiece.BlackQueen)
+	if (castlingAbility[WHITE].kingSide) fenCastling.push(FEN_WHITE_KING)
+	if (castlingAbility[WHITE].queenSide) fenCastling.push(FEN_WHITE_QUEEN)
+	if (castlingAbility[BLACK].kingSide) fenCastling.push(FEN_BLACK_KING)
+	if (castlingAbility[BLACK].queenSide) fenCastling.push(FEN_BLACK_QUEEN)
 	return fenCastling.length > 0 ? fenCastling.join('') : '-'
 }
 
@@ -59,7 +65,7 @@ export function fenToEnPassantTargetSquareIndex(
 	const [file, rank, ...rest] = fen.split('')
 	const parsedFile = parseFile(file)
 	const parsedRank = parseRank(rank)
-	if (rest.length > 1 || !parsedFile || !parsedRank) return null
+	if (rest.length > 1 || isNil(parsedFile) || isNil(parsedRank)) return null
 	return squareToIndex({ file: parsedFile, rank: parsedRank })
 }
 
@@ -84,6 +90,9 @@ export function sideToMoveToFen(sideToMove: Color) {
 
 export function fenToBoard(fen: string): Board {
 	const ranks = fen.split('/')
+	if (ranks.length !== CHESS_BOARD_SIZE) {
+		throw new Error(`Invalid FEN board: expected ${CHESS_BOARD_SIZE} ranks`)
+	}
 
 	let board: Array<ChessPiece | null> = []
 
@@ -95,6 +104,9 @@ export function fenToBoard(fen: string): Board {
 					Array.from({ length: parseInt(symbol) }, () => null),
 				)
 				continue
+			}
+			if (!FEN_PIECES.includes(symbol as FenPiece)) {
+				throw new Error(`Invalid FEN board: unknown symbol "${symbol}"`)
 			}
 			board.push(fenToChessPiece(symbol as FenPiece))
 		}

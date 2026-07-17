@@ -1,4 +1,4 @@
-import { isNil } from 'ramda'
+import { isNil } from '../../internal/utils'
 import { Move } from '../../chess.models'
 import { squareToIndex } from '../../chess.lib'
 import {
@@ -31,9 +31,11 @@ export function parseMove(move: string): Move | null {
 		return null
 	}
 
-	return {
-		from: squareToIndex({ file: fromFile, rank: fromRank }),
-		to: squareToIndex({ file: toFile, rank: toRank }),
-		promotion,
+	const from = squareToIndex({ file: fromFile, rank: fromRank })
+	const to = squareToIndex({ file: toFile, rank: toRank })
+
+	if (promotion) {
+		return { kind: 'promotion', from, to, promotion }
 	}
+	return { kind: 'normal', from, to }
 }

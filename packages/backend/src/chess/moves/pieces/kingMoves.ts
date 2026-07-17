@@ -1,10 +1,14 @@
 import {
 	CASTLE_KING_SIDE,
 	CASTLE_QUEEN_SIDE,
-	KING_MOVES,
-} from '../../chess.constants'
-import { indexToSquare, isOutOfBounds, squareToIndex } from '../../chess.lib'
-import { SquareIndex, State, Move } from '../../chess.models'
+	indexToSquare,
+	isOutOfBounds,
+	squareToIndex,
+	SquareIndex,
+	State,
+	Move,
+} from 'chess-core'
+import { KING_MOVES } from 'chess-core/internal'
 import { isUnderAttack } from '../moves.lib'
 
 export function generateKingMoves(from: SquareIndex, state: State): Move[] {
@@ -24,6 +28,7 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
 			continue
 
 		moves.push({
+			kind: 'normal',
 			from: from,
 			to: destinationIndex,
 		})
@@ -53,6 +58,7 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
 
 			if (everyIsClear && everyIsUnContested) {
 				moves.push({
+					kind: 'castle',
 					from,
 					to: squareToIndex({ rank, file: file + 2 }),
 					castling: CASTLE_KING_SIDE,
@@ -78,6 +84,7 @@ export function generateKingMoves(from: SquareIndex, state: State): Move[] {
 
 			if (everyIsClear && everyIsUnContested) {
 				moves.push({
+					kind: 'castle',
 					from,
 					to: squareToIndex({ rank, file: file - 2 }),
 					castling: CASTLE_QUEEN_SIDE,

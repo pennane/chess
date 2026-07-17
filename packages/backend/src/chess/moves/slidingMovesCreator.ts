@@ -3,8 +3,10 @@ import {
 	indexToSquare,
 	isOutOfBounds,
 	squareToIndex,
-} from '../chess.lib'
-import { SquareIndex, State, Move } from '../chess.models'
+	SquareIndex,
+	State,
+	Move,
+} from 'chess-core'
 
 export const slidingMovesCreator =
 	(directions: number[][]) =>
@@ -31,13 +33,13 @@ export const slidingMovesCreator =
 				const destinationPiece = getPiece(destination, state)
 
 				if (!destinationPiece) {
-					moves.push({ from: from, to: destination })
+					moves.push({ kind: 'normal', from: from, to: destination })
 					continue
 				}
 
 				if (destinationPiece.color === state.sideToMove) break
 
-				moves.push({ from: from, to: destination })
+				moves.push({ kind: 'normal', from: from, to: destination })
 				break
 			}
 		}

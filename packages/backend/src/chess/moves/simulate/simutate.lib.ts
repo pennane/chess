@@ -6,9 +6,12 @@ import {
 	CASTLE_KING_SIDE,
 	CASTLING_SQUARES,
 	CASTLE_QUEEN_SIDE,
-} from '../../chess.constants'
-import { indexToSquare, getPiece, squareToIndex } from '../../chess.lib'
-import { State, Move } from '../../chess.models'
+	indexToSquare,
+	getPiece,
+	squareToIndex,
+	State,
+	Move,
+} from 'chess-core'
 import { invertColor } from '../moves.lib'
 
 export const updateCastlingAbility =
@@ -67,7 +70,7 @@ export const handleCastling =
 	(state: State): State => {
 		const sideToMove = state.sideToMove
 
-		if (move.castling === CASTLE_KING_SIDE) {
+		if (move.kind === 'castle' && move.castling === CASTLE_KING_SIDE) {
 			const oldKingSquare = squareToIndex(
 				CASTLING_SQUARES[sideToMove].kingSide.oldKingSquare,
 			)
@@ -91,7 +94,7 @@ export const handleCastling =
 			return state
 		}
 
-		if (move.castling === CASTLE_QUEEN_SIDE) {
+		if (move.kind === 'castle' && move.castling === CASTLE_QUEEN_SIDE) {
 			const oldKingSquare = squareToIndex(
 				CASTLING_SQUARES[sideToMove].queenSide.oldKingSquare,
 			)
@@ -123,7 +126,7 @@ export const invertStateSideToMove = (state: State): State => {
 export const handleMove =
 	(move: Move) =>
 	(state: State): State => {
-		if (move.castling) return state
+		if (move.kind === 'castle') return state
 		state.board[move.to] = state.board[move.from]
 		state.board[move.from] = null
 		return state
@@ -131,7 +134,7 @@ export const handleMove =
 export const handlePromotion =
 	(move: Move) =>
 	(state: State): State => {
-		if (!move.promotion) return state
+		if (move.kind !== 'promotion') return state
 		state.board[move.to] = {
 			color: state.sideToMove,
 			type: move.promotion,

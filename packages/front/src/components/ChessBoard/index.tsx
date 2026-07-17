@@ -1,14 +1,14 @@
 import { FC } from 'react'
-import {
-  TChessBoard,
-  TChessPieceColor,
-  TChessSquare,
-  TChessSquareWithType
-} from '../../chess/chess.models'
 import styled from 'styled-components'
+import {
+  CHESS_BOARD_SIZE,
+  ChessPiece,
+  Color,
+  Square,
+  WHITE
+} from 'chess-core'
 import { ChessBoardSquare } from './components/ChessBoardSquare/ChessBoardSquare'
 import { parseRanks } from './lib'
-import { CHESS_BOARD_SIZE, WHITE } from '../../chess/chess.constants'
 
 const StyledChessBoard = styled.div`
   display: flex;
@@ -19,13 +19,16 @@ const StyledRank = styled.div`
   display: flex;
 `
 
-type TChessBoardProps = {
-  board: TChessBoard
-  sidePlaying: TChessPieceColor
-  onPieceDrop: (item: { from: TChessSquareWithType; to: TChessSquare }) => void
+type ChessBoardProps = {
+  board: Array<ChessPiece | null>
+  sidePlaying: Color
+  onPieceDrop: (item: {
+    from: Square & { piece: ChessPiece }
+    to: Square
+  }) => void
 }
 
-export const ChessBoard: FC<TChessBoardProps> = ({
+export const ChessBoard: FC<ChessBoardProps> = ({
   board,
   sidePlaying,
   onPieceDrop

@@ -5,14 +5,15 @@ import {
 	RANK_1,
 	RANK_8,
 	PROMOTABLE_PIECES,
-} from '../../chess.constants'
-import {
 	getPiece,
 	indexToSquare,
 	isOutOfBounds,
 	squareToIndex,
-} from '../../chess.lib'
-import { SquareIndex, State, Move, Square } from '../../chess.models'
+	SquareIndex,
+	State,
+	Move,
+	Square,
+} from 'chess-core'
 
 export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 	const moves: Move[] = []
@@ -31,6 +32,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 		!isOutOfBounds(squareOneForward)
 	) {
 		moves.push({
+			kind: 'normal',
 			from: from,
 			to: squareToIndex(squareOneForward),
 		})
@@ -41,6 +43,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 	const pieceTwoForward = getPiece(squareTwoForward, state)
 	if (rank === pawnStartingRank && !pieceOneForward && !pieceTwoForward) {
 		moves.push({
+			kind: 'normal',
 			from: from,
 			to: squareToIndex(squareTwoForward),
 		})
@@ -61,6 +64,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 		if (squareOneForwardOneLeft.rank === pawnEndingRank) {
 			for (const promotion of PROMOTABLE_PIECES) {
 				moves.push({
+					kind: 'promotion',
 					from: from,
 					to: squareToIndex(squareOneForwardOneLeft),
 					promotion,
@@ -68,6 +72,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 			}
 		} else {
 			moves.push({
+				kind: 'normal',
 				from: from,
 				to: squareToIndex(squareOneForwardOneLeft),
 			})
@@ -89,6 +94,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 		if (squareOneForwardOneRight.rank === pawnEndingRank) {
 			for (const promotion of PROMOTABLE_PIECES) {
 				moves.push({
+					kind: 'promotion',
 					from: from,
 					to: squareToIndex(squareOneForwardOneRight),
 					promotion,
@@ -96,6 +102,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 			}
 		} else {
 			moves.push({
+				kind: 'normal',
 				from: from,
 				to: squareToIndex(squareOneForwardOneRight),
 			})
@@ -107,6 +114,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 		const enPassantPiece = getPiece(state.enPassantTargetSquareIndex, state)
 		if (enPassantPiece?.color !== state.sideToMove) {
 			moves.push({
+				kind: 'normal',
 				from: from,
 				to: state.enPassantTargetSquareIndex,
 			})
@@ -117,6 +125,7 @@ export function generatePawnMoves(from: SquareIndex, state: State): Move[] {
 	if (!pieceOneForward && squareOneForward.rank === pawnEndingRank) {
 		for (const promotion of PROMOTABLE_PIECES) {
 			moves.push({
+				kind: 'promotion',
 				from: from,
 				to: squareToIndex(squareOneForward),
 				promotion,

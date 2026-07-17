@@ -1,7 +1,5 @@
 import { CHESS_BOARD_SIZE } from './chess.constants'
 import { ChessPiece, Square, SquareIndex, State } from './chess.models'
-import { fenToState } from './serialization/fen/fen'
-import { INITIAL_CHESS_BOARD_FEN_STRING } from './serialization/fen/fen.constants'
 
 export function getPiece(
 	square: Square | SquareIndex,
