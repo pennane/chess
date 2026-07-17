@@ -1,6 +1,6 @@
 import { isNil } from '../../internal/utils'
 import { Move } from '../../chess.models'
-import { squareToIndex } from '../../chess.lib'
+import { indexToSquare, squareToIndex } from '../../chess.lib'
 import {
 	parseFile,
 	parseRank,
@@ -38,4 +38,13 @@ export function parseMove(move: string): Move | null {
 		return { kind: 'promotion', from, to, promotion }
 	}
 	return { kind: 'normal', from, to }
+}
+
+export function serializeMove(move: Move): string {
+	const fromSquare = indexToSquare(move.from)
+	const toSquare = indexToSquare(move.to)
+	const fromStr = `${String.fromCharCode('a'.charCodeAt(0) + fromSquare.file)}${fromSquare.rank + 1}`
+	const toStr = `${String.fromCharCode('a'.charCodeAt(0) + toSquare.file)}${toSquare.rank + 1}`
+	const promotion = move.kind === 'promotion' ? move.promotion : ''
+	return `${fromStr}${toStr}${promotion}`
 }

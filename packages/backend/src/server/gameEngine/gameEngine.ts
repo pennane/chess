@@ -11,12 +11,14 @@ import {
 import { getGameFromStore, getGameStore } from './store/store'
 import { EngineChessGame, EngineChessGameStatus } from './store/store.models'
 import {
+	fenToState,
+	stateToFen,
+	parseMove,
 	generateMoves,
 	playMove as playChessMove,
-} from '../../chess/moves/moves'
-import { fenToState, stateToFen, parseMove } from 'chess-core'
+	isInCheck,
+} from 'chess-core'
 import { isEmpty } from '../../utils/fp'
-import { isInCheck } from '../../chess/moves/moves.lib'
 
 export function getGame(gameId: string) {
 	return getGameFromStore(gameId)

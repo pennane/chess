@@ -3,10 +3,8 @@ import {
 	indexToSquare,
 	isOutOfBounds,
 	squareToIndex,
-	SquareIndex,
-	State,
-	Move,
-} from 'chess-core'
+} from '../chess.lib'
+import { SquareIndex, State, Move } from '../chess.models'
 
 export const slidingMovesCreator =
 	(directions: number[][]) =>

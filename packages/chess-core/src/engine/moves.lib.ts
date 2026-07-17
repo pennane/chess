@@ -1,20 +1,18 @@
+import { BLACK, KING, WHITE } from '../chess.constants'
+import { getPiece } from '../chess.lib'
 import {
-	BLACK,
-	KING,
-	WHITE,
-	getPiece,
 	Board,
 	ChessPiece,
 	Color,
 	Move,
 	SquareIndex,
 	State,
-} from 'chess-core'
+} from '../chess.models'
 import {
 	generateLegalMovesForSquareIndex,
 	generateMovesForSquareIndex,
 } from './moves'
-import { simulateMove } from './simulate/simulate'
+import { simulateMove } from './simulate'
 
 export function isLegalMove(
 	state: State,

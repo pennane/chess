@@ -1,4 +1,3 @@
-import { assertNever } from '../../utils/assert'
 import {
 	PAWN,
 	KNIGHT,
@@ -6,12 +5,11 @@ import {
 	ROOK,
 	QUEEN,
 	KING,
-	getPiece,
-	State,
-	Move,
-	SquareIndex,
-	parseMove,
-} from 'chess-core'
+} from '../chess.constants'
+import { getPiece } from '../chess.lib'
+import { State, Move, SquareIndex } from '../chess.models'
+import { parseMove } from '../serialization/pureCoordinateNotation/pureCoordinateNotation'
+import { assertNever } from './utils'
 import { generateBishopMoves } from './pieces/bishopMoves'
 import { generateKingMoves } from './pieces/kingMoves'
 import { generateKnightMoves } from './pieces/knightMoves'
@@ -19,7 +17,7 @@ import { findPiecePosition, isLegalMove, validateMove } from './moves.lib'
 import { generatePawnMoves } from './pieces/pawnMoves'
 import { generateQueenMoves } from './pieces/queenMoves'
 import { generateRookMoves } from './pieces/rookMoves'
-import { simulateMove } from './simulate/simulate'
+import { simulateMove } from './simulate'
 
 export function generateMovesForSquareIndex(
 	state: State,

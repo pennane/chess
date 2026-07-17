@@ -2,11 +2,9 @@ import {
 	indexToSquare,
 	isOutOfBounds,
 	squareToIndex,
-	SquareIndex,
-	State,
-	Move,
-} from 'chess-core'
-import { KNIGHT_MOVES } from 'chess-core/internal'
+} from '../../chess.lib'
+import { SquareIndex, State, Move } from '../../chess.models'
+import { KNIGHT_MOVES } from '../../internal/moveTables'
 
 export function generateKnightMoves(from: SquareIndex, state: State): Move[] {
 	const moves: Move[] = []
