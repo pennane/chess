@@ -6,13 +6,10 @@ import {
 	CASTLE_KING_SIDE,
 	CASTLING_SQUARES,
 	CASTLE_QUEEN_SIDE,
-	indexToSquare,
-	getPiece,
-	squareToIndex,
-	State,
-	Move,
-} from 'chess-core'
-import { invertColor } from '../moves.lib'
+} from '../chess.constants'
+import { indexToSquare, getPiece, squareToIndex } from '../chess.lib'
+import { State, Move } from '../chess.models'
+import { invertColor } from './moves.lib'
 
 export const updateCastlingAbility =
 	(move: Move) =>
@@ -61,10 +58,12 @@ export const updateCastlingAbility =
 
 		return state
 	}
+
 export const incrementFullMoveCounter = (state: State): State => {
 	state.fullmoveCounter += 1
 	return state
 }
+
 export const handleCastling =
 	(move: Move) =>
 	(state: State): State => {
@@ -119,10 +118,12 @@ export const handleCastling =
 
 		return state
 	}
+
 export const invertStateSideToMove = (state: State): State => {
 	state.sideToMove = invertColor(state.sideToMove)
 	return state
 }
+
 export const handleMove =
 	(move: Move) =>
 	(state: State): State => {
@@ -131,6 +132,7 @@ export const handleMove =
 		state.board[move.from] = null
 		return state
 	}
+
 export const handlePromotion =
 	(move: Move) =>
 	(state: State): State => {

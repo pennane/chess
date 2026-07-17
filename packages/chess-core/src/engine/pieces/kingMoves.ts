@@ -1,14 +1,14 @@
 import {
 	CASTLE_KING_SIDE,
 	CASTLE_QUEEN_SIDE,
+} from '../../chess.constants'
+import {
 	indexToSquare,
 	isOutOfBounds,
 	squareToIndex,
-	SquareIndex,
-	State,
-	Move,
-} from 'chess-core'
-import { KING_MOVES } from 'chess-core/internal'
+} from '../../chess.lib'
+import { SquareIndex, State, Move } from '../../chess.models'
+import { KING_MOVES } from '../../internal/moveTables'
 import { isUnderAttack } from '../moves.lib'
 
 export function generateKingMoves(from: SquareIndex, state: State): Move[] {
